@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f34addab305f1468db892a75b228b2, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  maxRounds: 5
+  maxTurnsPerRound: 10
+  winsNeededForVictory: 3
+  initialHP: 100
+  initialMaxHP: 100
+  initialMP: 5
+  initialMaxMP: 5
+  initialHandSize: 3
+  mpRecoveryPerTurn: 2
+  canOverchargeMP: 0
+  maxMPOverchargeMultiplier: 1.5
+  hpResetBetweenRounds: 1
+  hpRecoveryBetweenRounds: 50
+  hpRecoveryPercentage: 0.5
+  giveRelicToLoser: 1
+  relicHPBonus: 20
+  relicMPBonus: 2
+  relicEffectMultiplier: 1
+  poisonDamage: 5
+  poisonDuration: 3
+  regenerationHeal: 8
+  regenerationDuration: 5
+  conditionalAttackDamage: 30
+  conditionalAttackHPThreshold: 0.25
+  basicAttackDamage: 15
+  basicAttackCost: 2
+  basicHealAmount: 20
+  basicHealCost: 2
+  powerAttackDamage: 25
+  powerAttackCost: 3
+  aiThinkingTime: 1
+  aiHealThreshold: 0.3
+  aiAggressionLevel: 0.7
+  globalDamageMultiplier: 1
+  globalHealMultiplier: 1
+  mpCostMultiplier: 1
+  enableDetailedLogging: 1
+  enableTacticalBoardLogging: 1
+  showStateAfterTurn: 1
+  applyEasyMode: 0
+  applyNormalMode: 0
+  applyHardMode: 0
+  applyTestMode: 0
