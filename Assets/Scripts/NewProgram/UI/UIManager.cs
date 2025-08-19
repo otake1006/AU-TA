@@ -118,7 +118,7 @@ public class UIManager : MonoBehaviour
 
     void UpdateManaBars()
     {
-        var battleManager = FindObjectOfType<BattleManager>();
+        var battleManager = FindFirstObjectByType<BattleManager>();
         if (battleManager == null) return;
 
         if (playerManaBar != null)
@@ -129,14 +129,14 @@ public class UIManager : MonoBehaviour
 
     void UpdateHandUI(Character character)
     {
-        var cardManager = FindObjectOfType<CardManager>();
+        var cardManager = FindFirstObjectByType<CardManager>();
         if (cardManager == null) return;
 
         Transform handArea = null;
         List<ConditionalSkillCard> hand = null;
         bool showFront = false;
 
-        var battleManager = FindObjectOfType<BattleManager>();
+        var battleManager = FindFirstObjectByType<BattleManager>();
         if (character == battleManager?.player)
         {
             handArea = playerHandArea?.transform;
