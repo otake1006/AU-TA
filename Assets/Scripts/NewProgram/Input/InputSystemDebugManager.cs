@@ -160,7 +160,7 @@ public class InputSystemDebugManager : MonoBehaviour
             //AddDebugLog($"Debug UI: {(newState ? "Shown" : "Hidden")}");
 
             // “ü—Íƒ‚[ƒh•ÏX
-            var gameManager = FindObjectOfType<InputSystemGameManager>();
+            var gameManager = GetComponent<InputSystemGameManager>();
             if (gameManager != null)
             {
                 if (newState)
