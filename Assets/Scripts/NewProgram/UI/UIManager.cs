@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.GPUSort;
 
 public class UIManager : MonoBehaviour
 {
@@ -41,6 +42,9 @@ public class UIManager : MonoBehaviour
     public Text finalScoreText;
     public Button restartButton;
     public Button mainMenuButton;
+
+    [Header("Debug UI")]
+    public Transform DebugCardArea;
 
     private GameConfig gameConfig;
     private List<GameObject> activeCardUIs = new List<GameObject>();
@@ -90,6 +94,8 @@ public class UIManager : MonoBehaviour
             restartButton.onClick.AddListener(() => GameManager.Instance?.RestartBattle());
         if (mainMenuButton != null)
             mainMenuButton.onClick.AddListener(() => GameManager.Instance?.ReturnToMainMenu());
+        if (DebugCardArea != null)
+            CreateDebugCards();
     }
 
     public void UpdateAllUI()
@@ -193,10 +199,29 @@ public class UIManager : MonoBehaviour
         return cardInstance;
     }
 
+    void CreateDebugCards()
+    {
+        var cardManager = FindObjectOfType<CardManager>();
+        if (cardManager != null)
+        {
+            foreach (var card in cardManager.availableCard)
+            {
+                GameObject cardObj = CreateCardUI(card, true);
+                cardObj.transform.SetParent(DebugCardArea, false);
+
+                var cardUI = cardObj.GetComponent<ConditionalCardUI>();
+                if (cardUI != null)
+                {
+                    //cardUI.OnCardClicked += () => UseCard(card);
+                }
+            }
+        }
+    }
+
     void UseCard(ConditionalSkillCard card)
     {
         var battleManager = FindObjectOfType<BattleManager>();
-        var cardManager = GetComponent<CardManager>();
+        var cardManager = FindObjectOfType<CardManager>();
 
         if (battleManager != null && cardManager != null)
         {
@@ -340,7 +365,7 @@ public class UIManager : MonoBehaviour
         {
             gameOverPanel.SetActive(true);
 
-            var roundManager = FindObjectOfType<RoundManager>();
+            var roundManager = GetComponent<RoundManager>();
             if (roundManager != null)
             {
                 var actualWinner = winner ?? roundManager.GetMatchWinner();

@@ -38,31 +38,7 @@ MonoBehaviour:
   skillSound: {fileID: 0}
   cardColor: {r: 1, g: 1, b: 1, a: 1}
   cardFrame: {fileID: 0}
-  usageConditions:
-  - conditionType: 1
-    target: 0
-    comparisonOperator: 3
-    value: 30
-    description: 
-  - conditionType: 1
-    target: 0
-    comparisonOperator: 3
-    value: 10
-    description: 
-  enhancedEffects:
-  - effectType: 0
-    targetType: 1
-    value: 15
-    duration: 0
-    associatedBuff: {fileID: 0}
-    hasCondition: 0
-    condition:
-      conditionType: 0
-      target: 0
-      comparisonOperator: 0
-      value: 0
-      description: 
-    effectName: 
-    effectColor: {r: 1, g: 1, b: 1, a: 1}
+  usageConditions: []
+  enhancedEffects: []
   hasEnhancedVersion: 1
   enhancedSkillSound: {fileID: 0}

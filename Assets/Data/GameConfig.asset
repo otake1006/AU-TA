@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f65f151a422fd14a95b7f9ff63c4909, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  winsNeeded: 2
+  winsNeeded: 3
   maxTurnsPerRound: 10
   enableSimultaneousDefeat: 1
-  simultaneousDefeatRule: 0
+  simultaneousDefeatRule: 2
   initialHandSize: 4
   maxHandSize: 7
   drawPerTurn: 1
   manaRegenPerTurn: 3
   persistBuffsBetweenRounds: 0
   enableDebugMode: 1
-  enableVerboseLogging: 0
+  enableVerboseLogging: 1
   aiThinkingTime: 1
   animationSpeedMultiplier: 1
   damageTextDuration: 2
