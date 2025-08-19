@@ -25,7 +25,7 @@ public class Character : MonoBehaviour
     private TurnBasedBuffManager buffManager;
 
     // プロパティ
-    public int CurrentHealth => currentStats.currentHealth;
+    public int CurrentHealth => currentStats?.currentHealth ?? 0;
     public int CurrentMana => currentStats.currentMana;
     public int CurrentAttack => currentStats.currentAttack;
     public int CurrentDefense => currentStats.currentDefense;
@@ -326,18 +326,21 @@ public class Character : MonoBehaviour
     public void DebugTakeDamage()
     {
         TakeDamage(10);
+        NotifyStatsChanged();
     }
 
     [ContextMenu("Debug - Heal 20")]
     public void DebugHeal()
     {
         Heal(20);
+        NotifyStatsChanged();
     }
 
     [ContextMenu("Debug - Add Shield")]
     public void DebugAddShield()
     {
         AddShield(15);
+        NotifyStatsChanged();
     }
 
     [ContextMenu("Debug - Reset Stats")]

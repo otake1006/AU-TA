@@ -196,7 +196,7 @@ public class UIManager : MonoBehaviour
     void UseCard(ConditionalSkillCard card)
     {
         var battleManager = FindObjectOfType<BattleManager>();
-        var cardManager = FindObjectOfType<CardManager>();
+        var cardManager = GetComponent<CardManager>();
 
         if (battleManager != null && cardManager != null)
         {

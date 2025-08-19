@@ -157,7 +157,7 @@ public class InputSystemDebugManager : MonoBehaviour
             bool newState = !debugPanel.activeSelf;
             debugPanel.SetActive(newState);
 
-            AddDebugLog($"Debug UI: {(newState ? "Shown" : "Hidden")}");
+            //AddDebugLog($"Debug UI: {(newState ? "Shown" : "Hidden")}");
 
             // “ü—Íƒ‚[ƒh•ÏX
             var gameManager = FindObjectOfType<InputSystemGameManager>();

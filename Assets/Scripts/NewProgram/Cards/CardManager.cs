@@ -9,6 +9,9 @@ public class CardManager : MonoBehaviour
     public List<ConditionalSkillCard> playerDeck;
     public List<ConditionalSkillCard> enemyDeck;
 
+    [Header("Available Cards")]
+    public List<ConditionalSkillCard> availableCard;
+
     // èD
     private List<ConditionalSkillCard> playerHand = new List<ConditionalSkillCard>();
     private List<ConditionalSkillCard> enemyHand = new List<ConditionalSkillCard>();
@@ -122,10 +125,10 @@ public class CardManager : MonoBehaviour
         }
 
         // èD‚©‚çíœ
-        RemoveCardFromHand(card, caster);
+        //RemoveCardFromHand(card, caster);
 
         // Ì‚ÄD‚É’Ç‰Á
-        AddToDiscard(card, caster);
+        //AddToDiscard(card, caster);
 
         // ƒCƒxƒ“ƒg”­‰Î
         GameEvents.OnCardUsed?.Invoke(card, caster, target);
