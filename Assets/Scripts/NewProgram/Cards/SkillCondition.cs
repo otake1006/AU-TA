@@ -1,14 +1,13 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Condition Card", menuName = "Card Game/Basic Condition Card")]
-public class SkillCondition : ScriptableObject
+public class SkillCondition : BaseCard
 {
     [Header("Condition Settings")]
     public ConditionType conditionType;
     public ConditionTarget target;
     public ComparisonOperator comparisonOperator;
     public int value;
-    public string description; // カスタム説明文
 
     // 条件を満たしているかチェック
     public bool IsMet(Character caster, Character enemy)

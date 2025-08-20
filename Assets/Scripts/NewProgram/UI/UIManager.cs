@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Card UI")]
     public GameObject cardUIPrefab;
+    public GameObject cardAndDescriptionUIPrefab;
     public GameObject buffIconPrefab;
 
     [Header("Game Over UI")]
@@ -199,11 +200,30 @@ public class UIManager : MonoBehaviour
         return cardInstance;
     }
 
+    GameObject CreateConditonCardUI(SkillCondition card)
+    {
+        if (cardUIPrefab == null)
+        {
+            // ÉvÉåÉnÉuÇ™Ç»Ç¢èÍçáÇÃä»à’UIçÏê¨
+            GameObject cardObj = new GameObject($"Card_{card.cardName}");
+            var cardU = cardObj.AddComponent<CardUI>();
+            cardU.SetCard(card);
+            return cardObj;
+        }
+
+        GameObject cardInstance = Instantiate(cardUIPrefab);
+        var cardUI = cardInstance.GetComponent<CardUI>();
+        cardUI?.SetCard(card);
+
+        return cardInstance;
+    }
+
     void CreateDebugCards()
     {
         var cardManager = FindFirstObjectByType<CardManager>();
         if (cardManager != null)
         {
+            // generate Skill Card
             foreach (var card in cardManager.skillCard)
             {
                 GameObject cardObj = CreateCardUI(card, true);
@@ -214,6 +234,19 @@ public class UIManager : MonoBehaviour
                 {
                     //cardUI.OnCardClicked += () => UseCard(card);
                 }
+            }
+
+            // generate Condition Card
+            foreach (var card in cardManager.conditionCard)
+            {
+                GameObject cardObj = CreateConditonCardUI(card);
+                cardObj.transform.SetParent(DebugCardArea, false);
+
+                //var cardUI = cardObj.GetComponent<ConditionalCardUI>();
+                //if (cardUI != null)
+                //{
+                //    //cardUI.OnCardClicked += () => UseCard(card);
+                //}
             }
         }
     }

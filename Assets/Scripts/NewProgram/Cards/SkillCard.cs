@@ -2,31 +2,8 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Skill Card", menuName = "Card Game/Basic Skill Card")]
-public class SkillCard : ScriptableObject
+public class SkillCard : BaseCard
 {
-    [Header("Basic Info")]
-    public int cardID;
-    public string cardName;
-    public string description;
-    public Sprite cardImage;
-    public CardRarity rarity = CardRarity.Common;
-
-    [Header("Cost")]
-    public int manaCost;
-
-    [Header("Animation")]
-    public int animationID;
-    public float animationDuration = 1f;
-
-    [Header("Effects")]
-    public TurnBasedSkillEffect[] effects;
-
-    [Header("Audio")]
-    public AudioClip skillSound;
-
-    [Header("Visual")]
-    public Color cardColor = Color.white;
-    public Sprite cardFrame;
 
     // 基本的なスキル実行
     public virtual void ExecuteSkill(Character caster, Character target)

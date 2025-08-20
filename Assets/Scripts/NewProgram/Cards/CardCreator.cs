@@ -13,7 +13,7 @@ public class CardCreator : MonoBehaviour
 
     void CreateBasicAttackCard()
     {
-        var card = ScriptableObject.CreateInstance<SkillCard>();
+        var card = ScriptableObject.CreateInstance<BaseCard>();
         card.cardID = 1;
         card.cardName = "Strike";
         card.description = "Deal 12 damage to target enemy";
