@@ -204,7 +204,7 @@ public class UIManager : MonoBehaviour
         var cardManager = FindFirstObjectByType<CardManager>();
         if (cardManager != null)
         {
-            foreach (var card in cardManager.availableCard)
+            foreach (var card in cardManager.skillCard)
             {
                 GameObject cardObj = CreateCardUI(card, true);
                 cardObj.transform.SetParent(DebugCardArea, false);
