@@ -80,10 +80,10 @@ public class TurnBasedSkillEffect
         }
 
         // ğŒî•ñ‚ğ’Ç‰Á
-        if (hasCondition && condition != null)
-        {
-            desc += $" [If: {condition.GetConditionDescription()}]";
-        }
+        //if (hasCondition && condition != null)
+        //{
+        //    desc += $" [If: {condition.GetConditionDescription()}]";
+        //}
 
         return desc;
     }
