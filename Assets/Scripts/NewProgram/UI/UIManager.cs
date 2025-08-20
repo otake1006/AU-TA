@@ -202,7 +202,7 @@ public class UIManager : MonoBehaviour
 
     GameObject CreateConditonCardUI(SkillCondition card)
     {
-        if (cardUIPrefab == null)
+        if (cardAndDescriptionUIPrefab == null)
         {
             // ƒvƒŒƒnƒu‚ª‚È‚¢ê‡‚ÌŠÈˆÕUIì¬
             GameObject cardObj = new GameObject($"Card_{card.cardName}");
@@ -211,7 +211,7 @@ public class UIManager : MonoBehaviour
             return cardObj;
         }
 
-        GameObject cardInstance = Instantiate(cardUIPrefab);
+        GameObject cardInstance = Instantiate(cardAndDescriptionUIPrefab);
         var cardUI = cardInstance.GetComponent<CardUI>();
         cardUI?.SetCard(card);
 
