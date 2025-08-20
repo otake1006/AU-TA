@@ -9,8 +9,12 @@ public class CardManager : MonoBehaviour
     public List<ConditionalSkillCard> playerDeck;
     public List<ConditionalSkillCard> enemyDeck;
 
-    [Header("Available Cards")]
-    public List<ConditionalSkillCard> availableCard;
+    [Header("Skill Cards")]
+    public List<ConditionalSkillCard> skillCard;
+
+    [Header("Condition Cards")]
+    public List<SkillCondition> conditionCard;
+
 
     // èD
     private List<ConditionalSkillCard> playerHand = new List<ConditionalSkillCard>();
