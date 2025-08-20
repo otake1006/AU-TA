@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Condition Card", menuName = "Card Game/Basic Condition Card")]
 public class SkillCondition : ScriptableObject
 {
-    [Header("条件設定")]
+    [Header("Condition Settings")]
     public ConditionType conditionType;
     public ConditionTarget target;
     public ComparisonOperator comparisonOperator;
@@ -120,11 +120,11 @@ public class SkillCondition : ScriptableObject
             case ConditionType.HealthPercentage: return "HP";
             case ConditionType.Mana: return "Mana";
             case ConditionType.ManaPercentage: return "Mana";
-            case ConditionType.Attack: return "Attack";
-            case ConditionType.Defense: return "Defense";
-            case ConditionType.Shield: return "Shield";
-            case ConditionType.BuffCount: return "Buffs";
-            case ConditionType.DebuffCount: return "Debuffs";
+            case ConditionType.Attack: return "攻撃";
+            case ConditionType.Defense: return "防御";
+            case ConditionType.Shield: return "シールド";
+            case ConditionType.BuffCount: return "バフ";
+            case ConditionType.DebuffCount: return "デバフ";
             case ConditionType.TotalBuffCount: return "Status Effects";
             case ConditionType.HandSize: return "Hand Size";
             case ConditionType.TurnNumber: return "Turn";
