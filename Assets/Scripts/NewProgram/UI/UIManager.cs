@@ -201,7 +201,7 @@ public class UIManager : MonoBehaviour
 
     void CreateDebugCards()
     {
-        var cardManager = FindObjectOfType<CardManager>();
+        var cardManager = FindFirstObjectByType<CardManager>();
         if (cardManager != null)
         {
             foreach (var card in cardManager.availableCard)
@@ -220,8 +220,8 @@ public class UIManager : MonoBehaviour
 
     void UseCard(ConditionalSkillCard card)
     {
-        var battleManager = FindObjectOfType<BattleManager>();
-        var cardManager = FindObjectOfType<CardManager>();
+        var battleManager = FindFirstObjectByType<BattleManager>();
+        var cardManager = FindFirstObjectByType<CardManager>();
 
         if (battleManager != null && cardManager != null)
         {
