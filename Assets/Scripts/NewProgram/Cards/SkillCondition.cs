@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[System.Serializable]
-public class SkillCondition
+[CreateAssetMenu(fileName = "New Condition Card", menuName = "Card Game/Basic Condition Card")]
+public class SkillCondition : ScriptableObject
 {
     [Header("ğŒİ’è")]
     public ConditionType conditionType;
