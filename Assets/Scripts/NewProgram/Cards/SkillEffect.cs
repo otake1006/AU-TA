@@ -16,9 +16,9 @@ public class TurnBasedSkillEffect
     [Header("Associated Buff")]
     public TurnBasedBuffEffect associatedBuff;
 
-    [Header("Conditions")]
-    public bool hasCondition = false;
-    public SkillCondition condition;
+    //[Header("Conditions")]
+    //public bool hasCondition = false;
+    //public SkillCondition condition;
 
     [Header("Visual")]
     public string effectName;
@@ -26,8 +26,9 @@ public class TurnBasedSkillEffect
 
     public bool CanExecute(Character caster, Character target)
     {
-        if (!hasCondition) return true;
-        return condition?.IsMet(caster, target) ?? true;
+        //if (!hasCondition) return true;
+        //return condition?.IsMet(caster, target) ?? true;
+        return true;
     }
 
     public string GetDescription()
