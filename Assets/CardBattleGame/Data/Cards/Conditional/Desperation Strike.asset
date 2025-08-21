@@ -23,16 +23,9 @@ MonoBehaviour:
   effects:
   - effectType: 0
     targetType: 1
-    value: 15
+    value: 30
     duration: 0
     associatedBuff: {fileID: 0}
-    hasCondition: 0
-    condition:
-      conditionType: 0
-      target: 0
-      comparisonOperator: 0
-      value: 0
-      description: 
     effectName: 
     effectColor: {r: 1, g: 1, b: 1, a: 1}
   skillSound: {fileID: 0}

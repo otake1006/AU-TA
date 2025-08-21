@@ -1196,7 +1196,7 @@ MonoBehaviour:
   mousePositionText: {fileID: 0}
   inputModeText: {fileID: 0}
   activeActionsText: {fileID: 0}
-  maxLogLines: 100
+  maxLogLines: 9999999
   autoScroll: 1
 --- !u!4 &285704661
 Transform:
@@ -3374,6 +3374,7 @@ MonoBehaviour:
   restartButton: {fileID: 0}
   mainMenuButton: {fileID: 0}
   DebugCardArea: {fileID: 788325665}
+  DebugCardConditionArea: {fileID: 1380683674}
 --- !u!4 &927035153
 Transform:
   m_ObjectHideFlags: 0
@@ -3483,7 +3484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228142b0d9239d645b273f1212fbeca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 0}
+  characterData: {fileID: 11400000, guid: 2e50c3ae4f60dc8479148903148c05c7, type: 2}
   characterName: Enemy
   maxHealth: 100
   maxMana: 50
@@ -5101,7 +5102,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -6142,14 +6143,15 @@ MonoBehaviour:
   playerDeck:
   - {fileID: 11400000, guid: d664d9fe62e9be245a9e67c01e51ee4e, type: 2}
   enemyDeck:
-  - {fileID: 11400000, guid: d664d9fe62e9be245a9e67c01e51ee4e, type: 2}
+  - {fileID: 11400000, guid: 22fb2ff02d7451c4da7eca471d51d9f8, type: 2}
   skillCard:
   - {fileID: 11400000, guid: d664d9fe62e9be245a9e67c01e51ee4e, type: 2}
   - {fileID: 11400000, guid: d664d9fe62e9be245a9e67c01e51ee4e, type: 2}
   - {fileID: 11400000, guid: d664d9fe62e9be245a9e67c01e51ee4e, type: 2}
   - {fileID: 11400000, guid: d664d9fe62e9be245a9e67c01e51ee4e, type: 2}
   - {fileID: 11400000, guid: d664d9fe62e9be245a9e67c01e51ee4e, type: 2}
-  conditionCard: []
+  conditionCard:
+  - {fileID: 11400000, guid: 25138ca1547c39544adcd64bde7030bf, type: 2}
 --- !u!114 &1956025789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6719,6 +6721,7 @@ GameObject:
   - component: {fileID: 2089610288}
   - component: {fileID: 2089610287}
   - component: {fileID: 2089610286}
+  - component: {fileID: 2089610291}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -6784,7 +6787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228142b0d9239d645b273f1212fbeca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 0}
+  characterData: {fileID: 11400000, guid: 5622fb2ed3758e144b271bc7650749ce, type: 2}
   characterName: Player
   maxHealth: 100
   maxMana: 50
@@ -6805,6 +6808,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1156635655}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2089610291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089610285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4810c6d1a03fe1b44ad3248179d963cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
