@@ -54,6 +54,7 @@ public class EnemyAI : MonoBehaviour
 
         var player = battleManager.player;
         var usableCards = cardManager.GetUsableCards(character);
+        GameEvents.OnDebugMessage?.Invoke(character == battleManager.player ? "playerHand" : "enemyHand");
 
         if (usableCards.Count == 0)
         {
@@ -61,16 +62,20 @@ public class EnemyAI : MonoBehaviour
             yield break;
         }
 
-        // AI戦略に基づいてカードを選択
-        var selectedCard = currentStrategy.SelectCard(usableCards, character, player);
 
-        if (selectedCard != null)
+        for (int i = 0; i < usableCards.Count; i++)
         {
-            // カード使用
-            bool success = cardManager.UseCard(selectedCard, character, player);
-            if (success)
+            // AI戦略に基づいてカードを選択
+            var selectedCard = currentStrategy.SelectCard(usableCards, character, player);
+
+            if (selectedCard != null)
             {
-                yield return StartCoroutine(ExecuteCardEffect(selectedCard, player));
+                // カード使用
+                bool success = cardManager.UseCard(selectedCard, character, player);
+                if (success)
+                {
+                    yield return StartCoroutine(ExecuteCardEffect(selectedCard, player));
+                }
             }
         }
     }
