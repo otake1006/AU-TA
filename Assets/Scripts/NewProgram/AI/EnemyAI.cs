@@ -54,7 +54,6 @@ public class EnemyAI : MonoBehaviour
 
         var player = battleManager.player;
         var usableCards = cardManager.GetUsableCards(character);
-        GameEvents.OnDebugMessage?.Invoke(character == battleManager.player ? "playerHand" : "enemyHand");
 
         if (usableCards.Count == 0)
         {
