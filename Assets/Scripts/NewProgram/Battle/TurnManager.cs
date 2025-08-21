@@ -43,6 +43,10 @@ public class TurnManager : MonoBehaviour
         }
 
         ProcessTurnStart(battleManager.player);
+
+        // プレイヤー行動
+        StartCoroutine(ExecutePlayer());
+        
         GameEvents.OnTurnChanged?.Invoke(CurrentTurn);
     }
 
@@ -70,7 +74,7 @@ public class TurnManager : MonoBehaviour
         character.RestoreMana(config.manaRegenPerTurn);
 
         // カードドロー
-        battleManager.cardManager.DrawCards(character, config.drawPerTurn);
+        //battleManager.cardManager.DrawCards(character, config.drawPerTurn);
 
         // 状態を戻す
         battleManager.ChangeState(IsPlayerTurn ? BattleState.PlayerTurn : BattleState.EnemyTurn);
@@ -83,7 +87,7 @@ public class TurnManager : MonoBehaviour
         ProcessTurnEnd(battleManager.player);
 
         // 同時撃破チェック
-        if (CheckForSimultaneousDefeat()) return;
+        //if (CheckForSimultaneousDefeat()) return;
 
         if (CurrentTurn >= config.maxTurnsPerRound)
         {
@@ -115,6 +119,20 @@ public class TurnManager : MonoBehaviour
         buffManager?.OnTurnEnd();
     }
 
+    IEnumerator ExecutePlayer()
+    {
+        yield return new WaitForSeconds(config.aiThinkingTime);
+
+        // Player処理
+        var player = battleManager.player.GetComponent<Player>();
+        if (player != null)
+        {
+            yield return StartCoroutine(player.ExecuteTurn());
+        }
+
+        EndPlayerTurn();
+    }
+
     IEnumerator ExecuteEnemyAI()
     {
         yield return new WaitForSeconds(config.aiThinkingTime);
@@ -141,7 +159,7 @@ public class TurnManager : MonoBehaviour
         }
 
         // 即座に同時撃破チェック
-        CheckForSimultaneousDefeat();
+        //CheckForSimultaneousDefeat();
     }
 
     bool CheckForSimultaneousDefeat()
