@@ -29,18 +29,15 @@ public class Player : MonoBehaviour
             yield break;
         }
 
-        for (int i = 0; i < usableCards.Count; i++)
-        {
-            var selectedCard = usableCards[i];
+        var selectedCard = usableCards.First();
 
-            if (selectedCard != null)
+        if (selectedCard != null)
+        {
+            // カード使用
+            bool success = cardManager.UseCard(selectedCard, character, target);
+            if (success)
             {
-                // カード使用
-                bool success = cardManager.UseCard(selectedCard, character, target);
-                if (success)
-                {
-                    yield return StartCoroutine(ExecuteCardEffect(selectedCard, target));
-                }
+                yield return StartCoroutine(ExecuteCardEffect(selectedCard, target));
             }
         }
     }
