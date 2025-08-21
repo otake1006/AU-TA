@@ -71,17 +71,17 @@ public class RoundManager : MonoBehaviour
         {
             case RoundResult.PlayerWin:
                 PlayerWins++;
-                GameEvents.OnNotificationShow?.Invoke($"Round {CurrentRound}: Player Wins!");
+                GameEvents.OnNotificationShow?.Invoke($"Round {CurrentRound}: プレイヤーの勝利!");
                 break;
             case RoundResult.EnemyWin:
                 EnemyWins++;
-                GameEvents.OnNotificationShow?.Invoke($"Round {CurrentRound}: Enemy Wins!");
+                GameEvents.OnNotificationShow?.Invoke($"Round {CurrentRound}: 相手の勝利!");
                 break;
             case RoundResult.Draw:
-                GameEvents.OnNotificationShow?.Invoke($"Round {CurrentRound}: Draw!");
+                GameEvents.OnNotificationShow?.Invoke($"Round {CurrentRound}: 引き分け!");
                 break;
             case RoundResult.Timeout:
-                GameEvents.OnNotificationShow?.Invoke($"Round {CurrentRound}: Timeout!");
+                GameEvents.OnNotificationShow?.Invoke($"Round {CurrentRound}: タイムアウト!");
                 break;
         }
 
