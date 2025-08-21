@@ -167,7 +167,7 @@ public class CardManager : MonoBehaviour
 
     void OnCardUsed(ConditionalSkillCard card, Character caster, Character target)
     {
-        GameEvents.OnDebugMessage?.Invoke($"{caster.characterName} used {card.cardName}");
+        //GameEvents.OnDebugMessage?.Invoke($"{caster.characterName} used {card.cardName}");
     }
 
     public int GetHandSize(Character character)
