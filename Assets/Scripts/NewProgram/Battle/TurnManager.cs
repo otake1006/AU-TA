@@ -82,7 +82,7 @@ public class TurnManager : MonoBehaviour
 
     public void EndPlayerTurn()
     {
-        GameEvents.OnDebugMessage?.Invoke("Player turn end");
+        GameEvents.OnDebugMessage?.Invoke("プレイヤーターン終了");
 
         ProcessTurnEnd(battleManager.player);
 
@@ -101,7 +101,7 @@ public class TurnManager : MonoBehaviour
 
     public void EndEnemyTurn()
     {
-        GameEvents.OnDebugMessage?.Invoke("Enemy turn end");
+        GameEvents.OnDebugMessage?.Invoke("相手ターン終了");
 
         ProcessTurnEnd(battleManager.enemy);
 

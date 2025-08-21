@@ -41,7 +41,7 @@ public class BattleManager : MonoBehaviour
 
         SetupManagers();
         SetupEventListeners();
-        GameEvents.OnDebugMessage?.Invoke("BattleManager initialized");
+        GameEvents.OnDebugMessage?.Invoke("BattleManager 初期化完了");
     }
 
     void SetupManagers()
@@ -81,7 +81,7 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // バトル開始
-        GameEvents.OnDebugMessage?.Invoke("Battle Start!");
+        GameEvents.OnDebugMessage?.Invoke("バトルスタート!");
         ChangeState(BattleState.PlayerTurn);
         roundManager.StartNewRound();
     }
@@ -98,7 +98,7 @@ public class BattleManager : MonoBehaviour
 
         if (gameConfig.enableDebugMode)
         {
-            GameEvents.OnDebugMessage?.Invoke($"Battle State: {previousState} → {newState}");
+            GameEvents.OnDebugMessage?.Invoke($"バトルステータス: {previousState} → {newState}");
         }
     }
 
@@ -112,7 +112,7 @@ public class BattleManager : MonoBehaviour
         if (IsMatchOver) return;
 
         // 同時撃破チェックは SimultaneousDefeat で処理される
-        GameEvents.OnDebugMessage?.Invoke($"{character.characterName} defeated!");
+        GameEvents.OnDebugMessage?.Invoke($"{character.characterName} 敗北!");
     }
 
     void OnSimultaneousDefeat(Character player, Character enemy)
@@ -139,7 +139,7 @@ public class BattleManager : MonoBehaviour
 
     void OnCardUsed(ConditionalSkillCard card, Character caster, Character target)
     {
-        GameEvents.OnDebugMessage?.Invoke($"{caster.characterName} used {card.cardName}");
+        GameEvents.OnDebugMessage?.Invoke($"{caster.characterName} 使用 {card.cardName}");
     }
 
     void EndMatch()
@@ -150,7 +150,7 @@ public class BattleManager : MonoBehaviour
         Character winner = roundManager.GetMatchWinner();
         GameEvents.OnMatchEnd?.Invoke(winner);
 
-        GameEvents.OnDebugMessage?.Invoke($"Match ended! Winner: {winner?.characterName}");
+        GameEvents.OnDebugMessage?.Invoke($"試合終了! 勝者: {winner?.characterName}");
     }
 
     public void RestartBattle()

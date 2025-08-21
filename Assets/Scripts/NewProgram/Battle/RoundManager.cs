@@ -59,7 +59,7 @@ public class RoundManager : MonoBehaviour
             enemyBuffManager?.ClearAllBuffs();
         }
 
-        GameEvents.OnDebugMessage?.Invoke("Characters reset for new round");
+        GameEvents.OnDebugMessage?.Invoke("キャラクターがリセットされ、新しいラウンドが開始されます");
     }
 
     public void EndRound(RoundResult result)
