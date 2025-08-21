@@ -62,20 +62,15 @@ public class EnemyAI : MonoBehaviour
             yield break;
         }
 
+        var selectedCard = currentStrategy.SelectCard(usableCards, character, player);
 
-        for (int i = 0; i < usableCards.Count; i++)
+        if (selectedCard != null)
         {
-            // AI戦略に基づいてカードを選択
-            var selectedCard = currentStrategy.SelectCard(usableCards, character, player);
-
-            if (selectedCard != null)
+            // カード使用
+            bool success = cardManager.UseCard(selectedCard, character, player);
+            if (success)
             {
-                // カード使用
-                bool success = cardManager.UseCard(selectedCard, character, player);
-                if (success)
-                {
-                    yield return StartCoroutine(ExecuteCardEffect(selectedCard, player));
-                }
+                yield return StartCoroutine(ExecuteCardEffect(selectedCard, player));
             }
         }
     }
