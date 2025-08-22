@@ -99,8 +99,8 @@ public class EnemyAI : MonoBehaviour
         switch (effect.effectType)
         {
             case SkillEffectType.Damage:
-                int damage = CalculateDamage(effect.value);
-                target.TakeDamage(damage);
+                //int damage = CalculateDamage(effect.value);
+                target.TakeDamage(effect.value);
                 break;
 
             case SkillEffectType.Heal:
