@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
 
         if (selectedCard != null)
         {
-            // ƒJ[ƒhg—p
+            // ï¿½Jï¿½[ï¿½hï¿½gï¿½p
             bool success = cardManager.UseCard(selectedCard, character, target);
             if (success)
             {
@@ -44,10 +44,10 @@ public class Player : MonoBehaviour
 
     IEnumerator ExecuteCardEffect(ConditionalSkillCard card, Character target)
     {
-        // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
+        // ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½
         character.GetComponent<CharacterAnimator>()?.PlayAttackAnimation();
 
-        // ƒGƒtƒFƒNƒgÀs
+        // ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½s
         var effects = card.GetEffectsToUse(character, target);
         foreach (var effect in effects)
         {
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
         }
 
-        // ‰¹ºÄ¶
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½
         if (card.skillSound != null)
         {
             character.GetComponent<CharacterAudio>()?.PlaySFX("Skill");
@@ -67,8 +67,8 @@ public class Player : MonoBehaviour
         switch (effect.effectType)
         {
             case SkillEffectType.Damage:
-                int damage = CalculateDamage(effect.value);
-                target.TakeDamage(damage);
+                //int damage = CalculateDamage(effect.value);
+                target.TakeDamage(effect.value);
                 break;
 
             case SkillEffectType.Heal:
