@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winsNeeded: 3
   maxTurnsPerRound: 10
-  enableSimultaneousDefeat: 1
+  enableSimultaneousDefeat: 0
   simultaneousDefeatRule: 2
   initialHandSize: 4
   maxHandSize: 7
