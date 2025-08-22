@@ -32,5 +32,5 @@ MonoBehaviour:
   sfxVolume: 0.8
   voiceVolume: 0.9
   baseDamageMultiplier: 1
-  criticalMultiplier: 1.5
-  shieldEfficiency: 1
+  criticalMultiplier: 1
+  shieldEfficiency: 0
