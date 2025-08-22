@@ -19,7 +19,7 @@ MonoBehaviour:
   maxHealth: 100
   maxMana: 50
   baseAttack: 10
-  baseDefense: 5
+  baseDefense: 0
   healthGrowth: 1.1
   manaGrowth: 1.05
   attackGrowth: 1.08
