@@ -11,8 +11,8 @@ public class Character : MonoBehaviour
     [Header("Stats")]
     public int maxHealth = 100;
     public int maxMana = 50;
-    public int baseAttack = 10;
-    public int baseDefense = 5;
+    public int baseAttack = 0;
+    public int baseDefense = 0;
 
     // 現在の値
     private CharacterStats currentStats;
@@ -26,7 +26,7 @@ public class Character : MonoBehaviour
 
     // プロパティ
     public int CurrentHealth => currentStats?.currentHealth ?? 0;
-    public int CurrentMana => currentStats.currentMana;
+    public int CurrentMana => currentStats?.currentMana ?? 0;
     public int CurrentAttack => currentStats.currentAttack;
     public int CurrentDefense => currentStats.currentDefense;
     public int CurrentShield => currentShield;
@@ -137,6 +137,8 @@ public class Character : MonoBehaviour
         {
             Die();
         }
+
+        NotifyStatsChanged();
     }
 
     int CalculateActualDamage(int baseDamage, DamageType damageType)
@@ -173,6 +175,8 @@ public class Character : MonoBehaviour
             characterAnimator?.PlayAnimation(GameConstants.ANIM_HEAL);
             characterAudio?.PlaySFX(GameConstants.SFX_HEAL);
         }
+
+        NotifyStatsChanged();
     }
 
     // =============================================================================
@@ -261,7 +265,7 @@ public class Character : MonoBehaviour
         OnDeath?.Invoke();
         GameEvents.OnCharacterDeath?.Invoke(this);
 
-        GameEvents.OnDebugMessage?.Invoke($"{characterName} has been defeated!");
+        //GameEvents.OnDebugMessage?.Invoke($"{characterName} has been defeated!");
     }
 
     public void Revive(int healthAmount = -1)
@@ -273,7 +277,7 @@ public class Character : MonoBehaviour
         OnHealthChanged?.Invoke(currentStats.currentHealth, maxHealth);
 
         characterAnimator?.PlayAnimation(GameConstants.ANIM_IDLE);
-        GameEvents.OnDebugMessage?.Invoke($"{characterName} has been revived!");
+        //GameEvents.OnDebugMessage?.Invoke($"{characterName} has been revived!");
     }
 
     // =============================================================================
