@@ -1,4 +1,4 @@
-// 修正されたTurnManager
+// MP消費型ターンシステムのTurnManager
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,9 +17,12 @@ public class TurnManager : MonoBehaviour
     private bool enemyDiedThisTurn = false;
 
     // コルーチン管理
-    private Coroutine playerTurnCoroutine;
-    private Coroutine enemyTurnCoroutine;
+    private Coroutine turnCoroutine;
     private bool isTurnProcessing = false;
+
+    // MP管理
+    private bool playerOutOfMP = false;
+    private bool enemyOutOfMP = false;
 
     public void Initialize(BattleManager manager)
     {
@@ -30,10 +33,10 @@ public class TurnManager : MonoBehaviour
         GameEvents.OnCharacterDeath += OnCharacterDeath;
     }
 
-    public void StartPlayerTurn()
+    public void StartTurn()
     {
         // 既に処理中のターンがあれば停止
-        StopAllTurnCoroutines();
+        StopTurnCoroutine();
 
         if (isTurnProcessing)
         {
@@ -42,15 +45,17 @@ public class TurnManager : MonoBehaviour
         }
 
         isTurnProcessing = true;
-        IsPlayerTurn = true;
-        FirstToAct = battleManager.player;
         battleManager.ChangeState(BattleState.PlayerTurn);
 
         // 同時撃破フラグリセット
         playerDiedThisTurn = false;
         enemyDiedThisTurn = false;
 
-        GameEvents.OnDebugMessage?.Invoke($"Turn {CurrentTurn} - Player");
+        // MPフラグリセット
+        playerOutOfMP = false;
+        enemyOutOfMP = false;
+
+        GameEvents.OnDebugMessage?.Invoke($"Turn {CurrentTurn} - Start");
 
         // ターン制限チェック
         if (CurrentTurn > config.maxTurnsPerRound)
@@ -59,49 +64,26 @@ public class TurnManager : MonoBehaviour
             return;
         }
 
+        // ターン開始時の処理
         ProcessTurnStart(battleManager.player);
+        ProcessTurnStart(battleManager.enemy);
 
-        // プレイヤー行動
-        playerTurnCoroutine = StartCoroutine(ExecutePlayerWithSafety());
+        // 先攻後攻決定（先攻はプレイヤー固定、または速度で決定）
+        IsPlayerTurn = true;
+        FirstToAct = battleManager.player;
+
+        // ターン実行開始
+        turnCoroutine = StartCoroutine(ExecuteTurnCycle());
 
         GameEvents.OnTurnChanged?.Invoke(CurrentTurn);
     }
 
-    public void StartEnemyTurn()
+    private void StopTurnCoroutine()
     {
-        // 既に処理中のターンがあれば停止
-        StopAllTurnCoroutines();
-
-        if (isTurnProcessing)
+        if (turnCoroutine != null)
         {
-            GameEvents.OnDebugMessage?.Invoke($"Enemy turn {CurrentTurn} is already being processed");
-            return;
-        }
-
-        isTurnProcessing = true;
-        IsPlayerTurn = false;
-        battleManager.ChangeState(BattleState.EnemyTurn);
-
-        GameEvents.OnDebugMessage?.Invoke($"Turn {CurrentTurn} - Enemy");
-
-        ProcessTurnStart(battleManager.enemy);
-
-        // AI行動
-        enemyTurnCoroutine = StartCoroutine(ExecuteEnemyAIWithSafety());
-    }
-
-    private void StopAllTurnCoroutines()
-    {
-        if (playerTurnCoroutine != null)
-        {
-            StopCoroutine(playerTurnCoroutine);
-            playerTurnCoroutine = null;
-        }
-
-        if (enemyTurnCoroutine != null)
-        {
-            StopCoroutine(enemyTurnCoroutine);
-            enemyTurnCoroutine = null;
+            StopCoroutine(turnCoroutine);
+            turnCoroutine = null;
         }
     }
 
@@ -114,23 +96,117 @@ public class TurnManager : MonoBehaviour
 
         // マナ回復
         character.RestoreMana(config.manaRegenPerTurn);
-
-        // 状態を戻す
-        battleManager.ChangeState(IsPlayerTurn ? BattleState.PlayerTurn : BattleState.EnemyTurn);
     }
 
-    public void EndPlayerTurn()
+    // 1ターン内で両方のキャラクターが交互に行動するメインループ
+    IEnumerator ExecuteTurnCycle()
     {
-        if (!isTurnProcessing || !IsPlayerTurn)
+        while (!playerOutOfMP || !enemyOutOfMP)
         {
-            GameEvents.OnDebugMessage?.Invoke("Player turn end ignored - not in player turn");
+            // 同時撃破チェック
+            if (CheckForSimultaneousDefeat()) yield break;
+
+            // 現在行動するキャラクターを決定
+            Character currentActor = IsPlayerTurn ? battleManager.player : battleManager.enemy;
+            bool isCurrentPlayerTurn = IsPlayerTurn;
+
+            // そのキャラクターがMPを持っているかチェック
+            bool hasMP = CheckHasMP(currentActor);
+
+            if (hasMP)
+            {
+                // 行動実行
+                yield return StartCoroutine(ExecuteCharacterAction(currentActor, isCurrentPlayerTurn));
+
+                // 行動後にMPチェック
+                UpdateMPStatus();
+            }
+            else
+            {
+                // MPがない場合はそのキャラクターをスキップ
+                GameEvents.OnDebugMessage?.Invoke($"{currentActor.name} has no MP, skipping");
+                if (IsPlayerTurn)
+                    playerOutOfMP = true;
+                else
+                    enemyOutOfMP = true;
+            }
+
+            // 次のキャラクターに交代
+            IsPlayerTurn = !IsPlayerTurn;
+
+            // もし両方ともMPがなくなったらループ終了
+            if (playerOutOfMP && enemyOutOfMP)
+                break;
+
+            // 少し間隔をあける
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        // ターン終了処理
+        EndTurn();
+    }
+
+    IEnumerator ExecuteCharacterAction(Character character, bool isPlayer)
+    {
+        if (isPlayer)
+        {
+            battleManager.ChangeState(BattleState.PlayerTurn);
+            yield return new WaitForSeconds(config.aiThinkingTime);
+
+            var player = character.GetComponent<Player>();
+            if (player != null)
+            {
+                yield return StartCoroutine(player.ExecuteTurn());
+            }
+        }
+        else
+        {
+            battleManager.ChangeState(BattleState.EnemyTurn);
+            yield return new WaitForSeconds(config.aiThinkingTime);
+
+            var ai = character.GetComponent<EnemyAI>();
+            if (ai != null)
+            {
+                yield return StartCoroutine(ai.ExecuteTurn());
+            }
+        }
+    }
+
+    bool CheckHasMP(Character character)
+    {
+        // キャラクターが何らかの行動を取るのに十分なMPを持っているかチェック
+        // 最小限必要なMP量（設定可能）
+        int minMPRequired = 1; // GameConfigに追加が必要
+
+        return character.CurrentMana >= minMPRequired;
+    }
+
+    void UpdateMPStatus()
+    {
+        // 各キャラクターのMP状況を更新
+        playerOutOfMP = !CheckHasMP(battleManager.player);
+        enemyOutOfMP = !CheckHasMP(battleManager.enemy);
+
+        if (playerOutOfMP)
+            GameEvents.OnDebugMessage?.Invoke("Player out of MP");
+        if (enemyOutOfMP)
+            GameEvents.OnDebugMessage?.Invoke("Enemy out of MP");
+    }
+
+    public void EndTurn()
+    {
+        if (!isTurnProcessing)
+        {
+            GameEvents.OnDebugMessage?.Invoke("Turn end ignored - not in turn");
             return;
         }
 
+        // ターン終了処理
         ProcessTurnEnd(battleManager.player);
+        ProcessTurnEnd(battleManager.enemy);
 
         // コルーチン参照をクリア
-        playerTurnCoroutine = null;
+        turnCoroutine = null;
         isTurnProcessing = false;
 
         // 同時撃破チェック
@@ -142,29 +218,9 @@ public class TurnManager : MonoBehaviour
         }
         else
         {
-            StartEnemyTurn();
+            CurrentTurn++;
+            StartTurn(); // 次のターン開始
         }
-    }
-
-    public void EndEnemyTurn()
-    {
-        if (!isTurnProcessing || IsPlayerTurn)
-        {
-            GameEvents.OnDebugMessage?.Invoke("Enemy turn end ignored - not in enemy turn");
-            return;
-        }
-
-        ProcessTurnEnd(battleManager.enemy);
-
-        // コルーチン参照をクリア
-        enemyTurnCoroutine = null;
-        isTurnProcessing = false;
-
-        // 同時撃破チェック
-        if (CheckForSimultaneousDefeat()) return;
-
-        CurrentTurn++;
-        StartPlayerTurn();
     }
 
     void ProcessTurnEnd(Character character)
@@ -172,46 +228,6 @@ public class TurnManager : MonoBehaviour
         battleManager.ChangeState(BattleState.BuffProcessing);
         var buffManager = character.GetComponent<TurnBasedBuffManager>();
         buffManager?.OnTurnEnd();
-    }
-
-    IEnumerator ExecutePlayerWithSafety()
-    {
-        yield return new WaitForSeconds(config.aiThinkingTime);
-
-        // 途中でキャンセルされた場合の確認
-        if (playerTurnCoroutine == null) yield break;
-
-        // Player処理
-        var player = battleManager.player.GetComponent<Player>();
-        if (player != null)
-        {
-            yield return StartCoroutine(player.ExecuteTurn());
-        }
-
-        // 途中でキャンセルされた場合の確認
-        if (playerTurnCoroutine == null) yield break;
-
-        EndPlayerTurn();
-    }
-
-    IEnumerator ExecuteEnemyAIWithSafety()
-    {
-        yield return new WaitForSeconds(config.aiThinkingTime);
-
-        // 途中でキャンセルされた場合の確認
-        if (enemyTurnCoroutine == null) yield break;
-
-        // AI処理
-        var ai = battleManager.enemy.GetComponent<EnemyAI>();
-        if (ai != null)
-        {
-            yield return StartCoroutine(ai.ExecuteTurn());
-        }
-
-        // 途中でキャンセルされた場合の確認
-        if (enemyTurnCoroutine == null) yield break;
-
-        EndEnemyTurn();
     }
 
     void OnCharacterDeath(Character character)
@@ -234,21 +250,21 @@ public class TurnManager : MonoBehaviour
         if (config.enableSimultaneousDefeat && playerDiedThisTurn && enemyDiedThisTurn)
         {
             GameEvents.OnSimultaneousDefeat?.Invoke(battleManager.player, battleManager.enemy);
-            StopAllTurnCoroutines();
+            StopTurnCoroutine();
             isTurnProcessing = false;
             return true;
         }
         else if (playerDiedThisTurn && !enemyDiedThisTurn)
         {
             battleManager.roundManager.EndRound(RoundResult.EnemyWin);
-            StopAllTurnCoroutines();
+            StopTurnCoroutine();
             isTurnProcessing = false;
             return true;
         }
         else if (!playerDiedThisTurn && enemyDiedThisTurn)
         {
             battleManager.roundManager.EndRound(RoundResult.PlayerWin);
-            StopAllTurnCoroutines();
+            StopTurnCoroutine();
             isTurnProcessing = false;
             return true;
         }
@@ -275,19 +291,21 @@ public class TurnManager : MonoBehaviour
         else
             result = RoundResult.Draw;
 
-        StopAllTurnCoroutines();
+        StopTurnCoroutine();
         isTurnProcessing = false;
         battleManager.roundManager.EndRound(result);
     }
 
     public void ResetTurn()
     {
-        StopAllTurnCoroutines();
+        StopTurnCoroutine();
         CurrentTurn = 1;
         IsPlayerTurn = true;
         FirstToAct = null;
         playerDiedThisTurn = false;
         enemyDiedThisTurn = false;
+        playerOutOfMP = false;
+        enemyOutOfMP = false;
         isTurnProcessing = false;
     }
 
@@ -295,16 +313,24 @@ public class TurnManager : MonoBehaviour
     {
         if (battleManager.gameConfig.enableDebugMode)
         {
-            if (IsPlayerTurn)
-                EndPlayerTurn();
-            else
-                EndEnemyTurn();
+            EndTurn();
+        }
+    }
+
+    // 強制的に現在の行動キャラクターのMPを0にする（デバッグ用）
+    public void ForceCurrentCharacterOutOfMP()
+    {
+        if (battleManager.gameConfig.enableDebugMode)
+        {
+            Character current = IsPlayerTurn ? battleManager.player : battleManager.enemy;
+            current.ConsumeMana(current.CurrentMana);
+            UpdateMPStatus();
         }
     }
 
     void OnDestroy()
     {
         GameEvents.OnCharacterDeath -= OnCharacterDeath;
-        StopAllTurnCoroutines();
+        StopTurnCoroutine();
     }
 }
