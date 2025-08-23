@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
+// 修正されたRoundManager
 public class RoundManager : MonoBehaviour
 {
     private BattleManager battleManager;
@@ -12,6 +13,10 @@ public class RoundManager : MonoBehaviour
     public int PlayerWins { get; private set; } = 0;
     public int EnemyWins { get; private set; } = 0;
 
+    // コルーチン管理
+    private Coroutine nextRoundCoroutine;
+    private bool isProcessingRound = false;
+
     public void Initialize(BattleManager manager)
     {
         battleManager = manager;
@@ -20,6 +25,14 @@ public class RoundManager : MonoBehaviour
 
     public void StartNewRound()
     {
+        // 既に処理中なら無視
+        if (isProcessingRound)
+        {
+            GameEvents.OnDebugMessage?.Invoke($"Round {CurrentRound} is already being processed");
+            return;
+        }
+
+        isProcessingRound = true;
         GameEvents.OnDebugMessage?.Invoke($"=== Round {CurrentRound} Start ===");
 
         // キャラクターリセット
@@ -33,6 +46,8 @@ public class RoundManager : MonoBehaviour
 
         // UI更新
         GameEvents.OnScoreChanged?.Invoke(PlayerWins, EnemyWins);
+
+        isProcessingRound = false;
     }
 
     void ResetCharacters()
@@ -65,6 +80,13 @@ public class RoundManager : MonoBehaviour
 
     public void EndRound(RoundResult result)
     {
+        // 既に次のラウンドが開始されている場合は無視
+        if (nextRoundCoroutine != null)
+        {
+            GameEvents.OnDebugMessage?.Invoke($"Round end ignored - next round already scheduled");
+            return;
+        }
+
         GameEvents.OnDebugMessage?.Invoke($"=== Round {CurrentRound} End: {result} ===");
 
         // 勝利数更新
@@ -93,14 +115,34 @@ public class RoundManager : MonoBehaviour
         if (!IsMatchComplete())
         {
             CurrentRound++;
-            StartCoroutine(StartNextRoundAfterDelay());
+            nextRoundCoroutine = StartCoroutine(StartNextRoundAfterDelay());
+        }
+        else
+        {
+            GameEvents.OnDebugMessage?.Invoke("Match Complete!");
         }
     }
 
     IEnumerator StartNextRoundAfterDelay()
     {
+        GameEvents.OnDebugMessage?.Invoke($"Waiting 3 seconds before Round {CurrentRound}...");
         yield return new WaitForSeconds(3f);
+
+        // コルーチン参照をクリア
+        nextRoundCoroutine = null;
+
         StartNewRound();
+    }
+
+    public void StopCurrentRoundProcess()
+    {
+        if (nextRoundCoroutine != null)
+        {
+            StopCoroutine(nextRoundCoroutine);
+            nextRoundCoroutine = null;
+            GameEvents.OnDebugMessage?.Invoke("Next round process stopped");
+        }
+        isProcessingRound = false;
     }
 
     public bool IsMatchComplete()
@@ -119,6 +161,9 @@ public class RoundManager : MonoBehaviour
 
     public void ResetMatch()
     {
+        // 進行中のコルーチンを停止
+        StopCurrentRoundProcess();
+
         CurrentRound = 1;
         PlayerWins = 0;
         EnemyWins = 0;

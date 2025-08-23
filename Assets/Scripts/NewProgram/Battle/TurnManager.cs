@@ -1,7 +1,7 @@
+// 修正されたTurnManager
 using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class TurnManager : MonoBehaviour
 {
@@ -16,6 +16,11 @@ public class TurnManager : MonoBehaviour
     private bool playerDiedThisTurn = false;
     private bool enemyDiedThisTurn = false;
 
+    // コルーチン管理
+    private Coroutine playerTurnCoroutine;
+    private Coroutine enemyTurnCoroutine;
+    private bool isTurnProcessing = false;
+
     public void Initialize(BattleManager manager)
     {
         battleManager = manager;
@@ -27,6 +32,16 @@ public class TurnManager : MonoBehaviour
 
     public void StartPlayerTurn()
     {
+        // 既に処理中のターンがあれば停止
+        StopAllTurnCoroutines();
+
+        if (isTurnProcessing)
+        {
+            GameEvents.OnDebugMessage?.Invoke($"Turn {CurrentTurn} is already being processed");
+            return;
+        }
+
+        isTurnProcessing = true;
         IsPlayerTurn = true;
         FirstToAct = battleManager.player;
         battleManager.ChangeState(BattleState.PlayerTurn);
@@ -47,13 +62,23 @@ public class TurnManager : MonoBehaviour
         ProcessTurnStart(battleManager.player);
 
         // プレイヤー行動
-        StartCoroutine(ExecutePlayer());
+        playerTurnCoroutine = StartCoroutine(ExecutePlayerWithSafety());
 
         GameEvents.OnTurnChanged?.Invoke(CurrentTurn);
     }
 
     public void StartEnemyTurn()
     {
+        // 既に処理中のターンがあれば停止
+        StopAllTurnCoroutines();
+
+        if (isTurnProcessing)
+        {
+            GameEvents.OnDebugMessage?.Invoke($"Enemy turn {CurrentTurn} is already being processed");
+            return;
+        }
+
+        isTurnProcessing = true;
         IsPlayerTurn = false;
         battleManager.ChangeState(BattleState.EnemyTurn);
 
@@ -62,7 +87,22 @@ public class TurnManager : MonoBehaviour
         ProcessTurnStart(battleManager.enemy);
 
         // AI行動
-        StartCoroutine(ExecuteEnemyAI());
+        enemyTurnCoroutine = StartCoroutine(ExecuteEnemyAIWithSafety());
+    }
+
+    private void StopAllTurnCoroutines()
+    {
+        if (playerTurnCoroutine != null)
+        {
+            StopCoroutine(playerTurnCoroutine);
+            playerTurnCoroutine = null;
+        }
+
+        if (enemyTurnCoroutine != null)
+        {
+            StopCoroutine(enemyTurnCoroutine);
+            enemyTurnCoroutine = null;
+        }
     }
 
     void ProcessTurnStart(Character character)
@@ -75,18 +115,23 @@ public class TurnManager : MonoBehaviour
         // マナ回復
         character.RestoreMana(config.manaRegenPerTurn);
 
-        // カードドロー
-        //battleManager.cardManager.DrawCards(character, config.drawPerTurn);
-
         // 状態を戻す
         battleManager.ChangeState(IsPlayerTurn ? BattleState.PlayerTurn : BattleState.EnemyTurn);
     }
 
     public void EndPlayerTurn()
     {
-        //GameEvents.OnDebugMessage?.Invoke("プレイヤーターン終了");
+        if (!isTurnProcessing || !IsPlayerTurn)
+        {
+            GameEvents.OnDebugMessage?.Invoke("Player turn end ignored - not in player turn");
+            return;
+        }
 
         ProcessTurnEnd(battleManager.player);
+
+        // コルーチン参照をクリア
+        playerTurnCoroutine = null;
+        isTurnProcessing = false;
 
         // 同時撃破チェック
         if (CheckForSimultaneousDefeat()) return;
@@ -103,9 +148,17 @@ public class TurnManager : MonoBehaviour
 
     public void EndEnemyTurn()
     {
-        //GameEvents.OnDebugMessage?.Invoke("相手ターン終了");
+        if (!isTurnProcessing || IsPlayerTurn)
+        {
+            GameEvents.OnDebugMessage?.Invoke("Enemy turn end ignored - not in enemy turn");
+            return;
+        }
 
         ProcessTurnEnd(battleManager.enemy);
+
+        // コルーチン参照をクリア
+        enemyTurnCoroutine = null;
+        isTurnProcessing = false;
 
         // 同時撃破チェック
         if (CheckForSimultaneousDefeat()) return;
@@ -121,9 +174,12 @@ public class TurnManager : MonoBehaviour
         buffManager?.OnTurnEnd();
     }
 
-    IEnumerator ExecutePlayer()
+    IEnumerator ExecutePlayerWithSafety()
     {
         yield return new WaitForSeconds(config.aiThinkingTime);
+
+        // 途中でキャンセルされた場合の確認
+        if (playerTurnCoroutine == null) yield break;
 
         // Player処理
         var player = battleManager.player.GetComponent<Player>();
@@ -132,12 +188,18 @@ public class TurnManager : MonoBehaviour
             yield return StartCoroutine(player.ExecuteTurn());
         }
 
+        // 途中でキャンセルされた場合の確認
+        if (playerTurnCoroutine == null) yield break;
+
         EndPlayerTurn();
     }
 
-    IEnumerator ExecuteEnemyAI()
+    IEnumerator ExecuteEnemyAIWithSafety()
     {
         yield return new WaitForSeconds(config.aiThinkingTime);
+
+        // 途中でキャンセルされた場合の確認
+        if (enemyTurnCoroutine == null) yield break;
 
         // AI処理
         var ai = battleManager.enemy.GetComponent<EnemyAI>();
@@ -145,6 +207,9 @@ public class TurnManager : MonoBehaviour
         {
             yield return StartCoroutine(ai.ExecuteTurn());
         }
+
+        // 途中でキャンセルされた場合の確認
+        if (enemyTurnCoroutine == null) yield break;
 
         EndEnemyTurn();
     }
@@ -169,16 +234,22 @@ public class TurnManager : MonoBehaviour
         if (config.enableSimultaneousDefeat && playerDiedThisTurn && enemyDiedThisTurn)
         {
             GameEvents.OnSimultaneousDefeat?.Invoke(battleManager.player, battleManager.enemy);
+            StopAllTurnCoroutines();
+            isTurnProcessing = false;
             return true;
         }
         else if (playerDiedThisTurn && !enemyDiedThisTurn)
         {
             battleManager.roundManager.EndRound(RoundResult.EnemyWin);
+            StopAllTurnCoroutines();
+            isTurnProcessing = false;
             return true;
         }
         else if (!playerDiedThisTurn && enemyDiedThisTurn)
         {
             battleManager.roundManager.EndRound(RoundResult.PlayerWin);
+            StopAllTurnCoroutines();
+            isTurnProcessing = false;
             return true;
         }
 
@@ -204,16 +275,20 @@ public class TurnManager : MonoBehaviour
         else
             result = RoundResult.Draw;
 
+        StopAllTurnCoroutines();
+        isTurnProcessing = false;
         battleManager.roundManager.EndRound(result);
     }
 
     public void ResetTurn()
     {
+        StopAllTurnCoroutines();
         CurrentTurn = 1;
         IsPlayerTurn = true;
         FirstToAct = null;
         playerDiedThisTurn = false;
         enemyDiedThisTurn = false;
+        isTurnProcessing = false;
     }
 
     public void SkipCurrentTurn()
@@ -230,5 +305,6 @@ public class TurnManager : MonoBehaviour
     void OnDestroy()
     {
         GameEvents.OnCharacterDeath -= OnCharacterDeath;
+        StopAllTurnCoroutines();
     }
 }
