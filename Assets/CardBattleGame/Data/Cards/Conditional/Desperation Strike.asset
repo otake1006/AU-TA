@@ -33,5 +33,5 @@ MonoBehaviour:
   cardFrame: {fileID: 0}
   usageConditions: []
   enhancedEffects: []
-  hasEnhancedVersion: 1
+  hasEnhancedVersion: 0
   enhancedSkillSound: {fileID: 0}
