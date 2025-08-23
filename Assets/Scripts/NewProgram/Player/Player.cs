@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     private BattleManager battleManager;
     private CardManager cardManager;
 
+    // ƒJ[ƒhÀs’†ƒtƒ‰ƒO
+    private bool isExecutingCard = false;
+
     void Start()
     {
         character = GetComponent<Character>();
@@ -20,6 +23,12 @@ public class Player : MonoBehaviour
 
     public IEnumerator ExecuteTurn()
     {
+        if (isExecutingCard)
+        {
+            GameEvents.OnDebugMessage?.Invoke("Player is already executing a card");
+            yield break;
+        }
+
         var target = battleManager.enemy;
         var usableCards = cardManager.GetUsableCards(character);
 
@@ -33,21 +42,23 @@ public class Player : MonoBehaviour
 
         if (selectedCard != null)
         {
-            // ï¿½Jï¿½[ï¿½hï¿½gï¿½p
+            isExecutingCard = true;
+            // ƒJ[ƒhg—p
             bool success = cardManager.UseCard(selectedCard, character, target);
             if (success)
             {
                 yield return StartCoroutine(ExecuteCardEffect(selectedCard, target));
             }
+            isExecutingCard = false;
         }
     }
 
     IEnumerator ExecuteCardEffect(ConditionalSkillCard card, Character target)
     {
-        // ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½
+        // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
         character.GetComponent<CharacterAnimator>()?.PlayAttackAnimation();
 
-        // ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½s
+        // ƒGƒtƒFƒNƒgÀs
         var effects = card.GetEffectsToUse(character, target);
         foreach (var effect in effects)
         {
@@ -55,7 +66,7 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
         }
 
-        // ï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½
+        // ‰¹ºÄ¶
         if (card.skillSound != null)
         {
             character.GetComponent<CharacterAudio>()?.PlaySFX("Skill");

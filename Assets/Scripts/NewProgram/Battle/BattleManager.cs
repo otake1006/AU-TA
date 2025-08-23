@@ -29,7 +29,7 @@ public class BattleManager : MonoBehaviour
     {
         if (gameConfig != null)
         {
-            Initialize(gameConfig, player, enemy);
+            Initialize(gameConfig, player, enemy);  
         }
     }
 
@@ -41,7 +41,6 @@ public class BattleManager : MonoBehaviour
 
         SetupManagers();
         SetupEventListeners();
-        GameEvents.OnDebugMessage?.Invoke("BattleManager 初期化完了");
     }
 
     void SetupManagers()
@@ -98,7 +97,7 @@ public class BattleManager : MonoBehaviour
 
         if (gameConfig.enableDebugMode)
         {
-            GameEvents.OnDebugMessage?.Invoke($"バトルステータス: {previousState} → {newState}");
+            //GameEvents.OnDebugMessage?.Invoke($"バトルステータス: {previousState} → {newState}");
         }
     }
 

@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class TurnManager : MonoBehaviour
 {
@@ -46,7 +48,7 @@ public class TurnManager : MonoBehaviour
 
         // プレイヤー行動
         StartCoroutine(ExecutePlayer());
-        
+
         GameEvents.OnTurnChanged?.Invoke(CurrentTurn);
     }
 
@@ -82,12 +84,12 @@ public class TurnManager : MonoBehaviour
 
     public void EndPlayerTurn()
     {
-        GameEvents.OnDebugMessage?.Invoke("プレイヤーターン終了");
+        //GameEvents.OnDebugMessage?.Invoke("プレイヤーターン終了");
 
         ProcessTurnEnd(battleManager.player);
 
         // 同時撃破チェック
-        //if (CheckForSimultaneousDefeat()) return;
+        if (CheckForSimultaneousDefeat()) return;
 
         if (CurrentTurn >= config.maxTurnsPerRound)
         {
@@ -101,7 +103,7 @@ public class TurnManager : MonoBehaviour
 
     public void EndEnemyTurn()
     {
-        GameEvents.OnDebugMessage?.Invoke("相手ターン終了");
+        //GameEvents.OnDebugMessage?.Invoke("相手ターン終了");
 
         ProcessTurnEnd(battleManager.enemy);
 
@@ -159,7 +161,7 @@ public class TurnManager : MonoBehaviour
         }
 
         // 即座に同時撃破チェック
-        //CheckForSimultaneousDefeat();
+        CheckForSimultaneousDefeat();
     }
 
     bool CheckForSimultaneousDefeat()

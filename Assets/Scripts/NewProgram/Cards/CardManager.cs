@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,7 +32,12 @@ public class CardManager : MonoBehaviour
     public void Initialize(BattleManager manager)
     {
         battleManager = manager;
-        GameEvents.OnCardUsed += OnCardUsed;
+        //GameEvents.OnTestLogEvent += test;
+    }
+
+    public void test(ConditionalSkillCard card, Character caster, Character target)
+    {
+        GameEvents.OnDebugMessage?.Invoke($"{caster.characterName} 使用 {card.cardName}");
     }
 
     public void ResetForNewRound()
@@ -110,7 +116,7 @@ public class CardManager : MonoBehaviour
     ConditionalSkillCard GetRandomCard(List<ConditionalSkillCard> deck)
     {
         if (deck.Count == 0) return null;
-        int randomIndex = Random.Range(0, deck.Count);
+        int randomIndex = UnityEngine.Random.Range(0, deck.Count);
         return deck[randomIndex];
     }
 
@@ -135,7 +141,9 @@ public class CardManager : MonoBehaviour
         //AddToDiscard(card, caster);
 
         // イベント発火
-        GameEvents.OnCardUsed?.Invoke(card, caster, target);
+        //GameEvents.OnCardUsed?.Invoke(card, caster, target);
+        //GameEvents.OnTestLogEvent?.Invoke(card, caster, target);
+        Debug.Log($"{caster.name} used {card.name} for {target.name}");
         GameEvents.OnHandUpdated?.Invoke(caster);
 
         return true;
@@ -167,7 +175,7 @@ public class CardManager : MonoBehaviour
 
     void OnCardUsed(ConditionalSkillCard card, Character caster, Character target)
     {
-        //GameEvents.OnDebugMessage?.Invoke($"{caster.characterName} used {card.cardName}");
+        GameEvents.OnDebugMessage?.Invoke($"{caster.characterName} used {card.cardName}");
     }
 
     public int GetHandSize(Character character)
@@ -201,7 +209,7 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < deck.Count; i++)
         {
             var temp = deck[i];
-            int randomIndex = Random.Range(i, deck.Count);
+            int randomIndex = UnityEngine.Random.Range(i, deck.Count);
             deck[i] = deck[randomIndex];
             deck[randomIndex] = temp;
         }
@@ -236,6 +244,6 @@ public class CardManager : MonoBehaviour
 
     void OnDestroy()
     {
-        GameEvents.OnCardUsed -= OnCardUsed;
+        //GameEvents.OnTestLogEvent -= test;
     }
 }

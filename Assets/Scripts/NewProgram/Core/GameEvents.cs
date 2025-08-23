@@ -31,6 +31,9 @@ public static class GameEvents
     public static Action<Character, TurnBasedBuffEffect> OnBuffRemoved;
     public static Action<Character> OnBuffListChanged;
 
+    public static Action<RoundResult, int> OnTestEvent;
+    public static Action<ConditionalSkillCard, Character, Character> OnTestLogEvent;
+
     // UIƒCƒxƒ“ƒg
     public static Action OnUIUpdate;
     public static Action<string> OnNotificationShow;

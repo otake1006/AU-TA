@@ -177,7 +177,7 @@ public class UIManager : MonoBehaviour
                 var cardUI = cardObj.GetComponent<ConditionalCardUI>();
                 if (cardUI != null)
                 {
-                    //cardUI.OnCardClicked += () => UseCard(card);
+                    cardUI.OnCardClicked += () => UseCard(card);
                 }
             }
         }
@@ -233,7 +233,7 @@ public class UIManager : MonoBehaviour
                 var cardUI = cardObj.GetComponent<ConditionalCardUI>();
                 if (cardUI != null)
                 {
-                    //cardUI.OnCardClicked += () => UseCard(card);
+                    cardUI.OnCardClicked += () => UseCard(card);
                 }
             }
 
@@ -251,6 +251,54 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
+    void UseCard(ConditionalSkillCard card)
+    {
+        var battleManager = FindFirstObjectByType<BattleManager>();
+        var cardManager = FindFirstObjectByType<CardManager>();
+
+        if (battleManager != null && cardManager != null)
+        {
+            bool success = cardManager.UseCard(card, battleManager.player, battleManager.enemy);
+            if (success)
+            {
+                StartCoroutine(ExecuteCardEffect(card, battleManager.player, battleManager.enemy));
+            }
+        }
+    }
+
+    IEnumerator ExecuteCardEffect(ConditionalSkillCard card, Character caster, Character target)
+    {
+        // アニメーション設定
+        yield return new WaitForSeconds(card.animationDuration * gameConfig.animationSpeedMultiplier);
+
+        // エフェクト実行
+        var effects = card.GetEffectsToUse(caster, target);
+        foreach (var effect in effects)
+        {
+            ExecuteEffect(effect, caster, target);
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+    void ExecuteEffect(TurnBasedSkillEffect effect, Character caster, Character target)
+    {
+        var targetChar = effect.targetType == TargetType.Self ? caster : target;
+
+        switch (effect.effectType)
+        {
+            case SkillEffectType.Damage:
+                targetChar.TakeDamage(effect.value);
+                break;
+            case SkillEffectType.Heal:
+                targetChar.Heal(effect.value);
+                break;
+            case SkillEffectType.Shield:
+                targetChar.AddShield(effect.value);
+                break;
+        }
+    }
+
 
     void UpdateBuffUI(Character character)
     {
