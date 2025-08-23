@@ -226,6 +226,7 @@ public class Character : MonoBehaviour
             currentStats.currentMana -= amount;
             OnManaChanged?.Invoke(currentStats.currentMana, maxMana);
             GameEvents.OnManaChanged?.Invoke(this, currentStats.currentMana);
+            NotifyStatsChanged(); // todo 
             return true;
         }
         return false;
@@ -236,6 +237,7 @@ public class Character : MonoBehaviour
         currentStats.currentMana = Mathf.Min(maxMana, currentStats.currentMana + amount);
         OnManaChanged?.Invoke(currentStats.currentMana, maxMana);
         GameEvents.OnManaChanged?.Invoke(this, currentStats.currentMana);
+        NotifyStatsChanged(); // todo 
     }
 
     public void ResetToFullMana()
@@ -243,12 +245,14 @@ public class Character : MonoBehaviour
         currentStats.currentMana = maxMana;
         OnManaChanged?.Invoke(currentStats.currentMana, maxMana);
         GameEvents.OnManaChanged?.Invoke(this, currentStats.currentMana);
+        NotifyStatsChanged(); // todo 
     }
 
     public void ResetToFullHealth()
     {
         currentStats.currentHealth = maxHealth;
         OnHealthChanged?.Invoke(currentStats.currentHealth, maxHealth);
+        NotifyStatsChanged(); // todo 
     }
 
     // =============================================================================
