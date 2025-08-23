@@ -42,7 +42,8 @@ public class RoundManager : MonoBehaviour
         battleManager.cardManager.ResetForNewRound();
 
         // ターン開始
-        battleManager.turnManager.StartPlayerTurn();
+        //battleManager.turnManager.StartPlayerTurn();
+        battleManager.turnManager.StartTurn();
 
         // UI更新
         GameEvents.OnScoreChanged?.Invoke(PlayerWins, EnemyWins);
