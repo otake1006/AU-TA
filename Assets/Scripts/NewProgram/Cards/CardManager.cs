@@ -32,13 +32,8 @@ public class CardManager : MonoBehaviour
     public void Initialize(BattleManager manager)
     {
         battleManager = manager;
-        //GameEvents.OnTestLogEvent += test;
     }
 
-    public void test(ConditionalSkillCard card, Character caster, Character target)
-    {
-        GameEvents.OnDebugMessage?.Invoke($"{caster.characterName} 使用 {card.cardName}");
-    }
 
     public void ResetForNewRound()
     {
@@ -141,9 +136,8 @@ public class CardManager : MonoBehaviour
         //AddToDiscard(card, caster);
 
         // イベント発火
-        //GameEvents.OnCardUsed?.Invoke(card, caster, target);
+        GameEvents.OnCardUsed?.Invoke(card, caster, target);
         //GameEvents.OnTestLogEvent?.Invoke(card, caster, target);
-        Debug.Log($"{caster.name} used {card.name} for {target.name}");
         GameEvents.OnHandUpdated?.Invoke(caster);
 
         return true;
@@ -244,6 +238,5 @@ public class CardManager : MonoBehaviour
 
     void OnDestroy()
     {
-        //GameEvents.OnTestLogEvent -= test;
     }
 }
