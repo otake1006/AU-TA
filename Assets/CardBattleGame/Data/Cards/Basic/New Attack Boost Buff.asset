@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35063fe0d6e32e24e96da27ab305050f, type: 3}
+  m_Name: New Attack Boost Buff
+  m_EditorClassIdentifier: 
+  buffID: 0
+  buffName: 
+  buffType: 0
+  duration: 0
+  stackCount: 1
+  maxStacks: 1
+  isPermanent: 0
+  buffIcon: {fileID: 0}
+  triggerTiming: 0
+  description: 
+  remainingTurns: 0
+  attackIncrease: 5

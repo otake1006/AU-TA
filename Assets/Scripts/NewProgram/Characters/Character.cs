@@ -14,17 +14,17 @@ public class Character : MonoBehaviour
     public int baseAttack = 0;
     public int baseDefense = 0;
 
-    // Œ»İ‚Ì’l
+    // ï¿½ï¿½ï¿½İ‚Ì’l
     private CharacterStats currentStats;
     private int currentShield = 0;
     private bool canUseSkills = true;
 
-    // ƒRƒ“ƒ|[ƒlƒ“ƒgQÆ
+    // ï¿½Rï¿½ï¿½ï¿½|ï¿½[ï¿½lï¿½ï¿½ï¿½gï¿½Qï¿½ï¿½
     private CharacterAnimator characterAnimator;
     private CharacterAudio characterAudio;
     private TurnBasedBuffManager buffManager;
 
-    // ƒvƒƒpƒeƒB
+    // ï¿½vï¿½ï¿½ï¿½pï¿½eï¿½B
     public int CurrentHealth => currentStats?.currentHealth ?? 0;
     public int CurrentMana => currentStats?.currentMana ?? 0;
     public int CurrentAttack => currentStats.currentAttack;
@@ -32,8 +32,12 @@ public class Character : MonoBehaviour
     public int CurrentShield => currentShield;
     public bool CanUseSkills => canUseSkills;
     public bool IsDead => currentStats.currentHealth <= 0;
+    public bool IsAlive => currentStats.currentHealth > 0;
+    
+    // CharacterStatså…¬é–‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
+    public CharacterStats characterStats => currentStats;
 
-    // ƒCƒxƒ“ƒg
+    // ï¿½Cï¿½xï¿½ï¿½ï¿½g
     public Action<int, int> OnHealthChanged;  // current, max
     public Action<int, int> OnManaChanged;    // current, max
     public Action<int> OnAttackChanged;
@@ -49,7 +53,7 @@ public class Character : MonoBehaviour
 
     void InitializeCharacter()
     {
-        // ƒf[ƒ^‚©‚ç‰Šú‰»
+        // ï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½ç‰ï¿½ï¿½ï¿½ï¿½
         if (characterData != null)
         {
             characterName = characterData.characterName;
@@ -59,29 +63,29 @@ public class Character : MonoBehaviour
             baseDefense = characterData.baseDefense;
         }
 
-        // ƒXƒe[ƒ^ƒX‰Šú‰»
-        currentStats = new CharacterStats();
+        // ï¿½Xï¿½eï¿½[ï¿½^ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        currentStats = new CharacterStats(maxHealth, maxMana, baseAttack, baseDefense);
         ResetToBaseStats();
 
-        // UIXV
+        // UIï¿½Xï¿½V
         NotifyStatsChanged();
     }
 
     void SetupComponents()
     {
-        // ƒAƒjƒ[ƒ^[
+        // ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½^ï¿½[
         characterAnimator = GetComponent<CharacterAnimator>();
         if (characterAnimator == null)
             characterAnimator = gameObject.AddComponent<CharacterAnimator>();
         characterAnimator.Initialize(this);
 
-        // ƒI[ƒfƒBƒI
+        // ï¿½Iï¿½[ï¿½fï¿½Bï¿½I
         characterAudio = GetComponent<CharacterAudio>();
         if (characterAudio == null)
             characterAudio = gameObject.AddComponent<CharacterAudio>();
         characterAudio.Initialize(this);
 
-        // ƒoƒtƒ}ƒl[ƒWƒƒ[
+        // ï¿½oï¿½tï¿½}ï¿½lï¿½[ï¿½Wï¿½ï¿½ï¿½[
         buffManager = GetComponent<TurnBasedBuffManager>();
         if (buffManager == null)
             buffManager = gameObject.AddComponent<TurnBasedBuffManager>();
@@ -98,7 +102,7 @@ public class Character : MonoBehaviour
     }
 
     // =============================================================================
-    // ƒ_ƒ[ƒWE‰ñ•œƒVƒXƒeƒ€
+    // ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½Eï¿½ñ•œƒVï¿½Xï¿½eï¿½ï¿½
     // =============================================================================
     public void TakeDamage(int damage, DamageType damageType = DamageType.Normal)
     {
@@ -106,7 +110,7 @@ public class Character : MonoBehaviour
 
         int actualDamage = CalculateActualDamage(damage, damageType);
 
-        // ƒV[ƒ‹ƒh‚ª‚ ‚éê‡‚Ìˆ—
+        // ï¿½Vï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½Ìï¿½ï¿½ï¿½
         if (currentShield > 0)
         {
             int shieldDamage = Mathf.Min(actualDamage, currentShield);
@@ -116,11 +120,11 @@ public class Character : MonoBehaviour
             OnShieldChanged?.Invoke(currentShield);
             GameEvents.OnShieldChanged?.Invoke(this, currentShield);
 
-            // ƒV[ƒ‹ƒhƒ_ƒ[ƒWƒGƒtƒFƒNƒg
+            // ï¿½Vï¿½[ï¿½ï¿½ï¿½hï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½Gï¿½tï¿½Fï¿½Nï¿½g
             ShowDamageEffect(shieldDamage, DamageType.Shield);
         }
 
-        // c‚èƒ_ƒ[ƒW‚ğHP‚É“K—p
+        // ï¿½cï¿½ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½HPï¿½É“Kï¿½p
         if (actualDamage > 0)
         {
             currentStats.currentHealth = Mathf.Max(0, currentStats.currentHealth - actualDamage);
@@ -132,7 +136,7 @@ public class Character : MonoBehaviour
             characterAudio?.PlaySFX(GameConstants.SFX_DAMAGE);
         }
 
-        // €–S”»’è
+        // ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½
         if (currentStats.currentHealth <= 0)
         {
             Die();
@@ -145,13 +149,13 @@ public class Character : MonoBehaviour
     {
         if (damageType == DamageType.True)
         {
-            return baseDamage; // ^ƒ_ƒ[ƒW‚Í–hŒä–³‹
+            return baseDamage; // ï¿½^ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½Í–hï¿½ä–³ï¿½ï¿½
         }
 
-        // –hŒä—Í‚ğl—¶
+        // ï¿½hï¿½ï¿½Í‚ï¿½ï¿½lï¿½ï¿½
         int damage = Mathf.Max(1, baseDamage - currentStats.currentDefense);
 
-        // ƒNƒŠƒeƒBƒJƒ‹”»’è
+        // ï¿½Nï¿½ï¿½ï¿½eï¿½Bï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (damageType == DamageType.Critical)
         {
             damage = Mathf.RoundToInt(damage * GameConstants.CRITICAL_CHANCE_BASE);
@@ -180,7 +184,7 @@ public class Character : MonoBehaviour
     }
 
     // =============================================================================
-    // ƒXƒe[ƒ^ƒX•ÏXƒVƒXƒeƒ€
+    // ï¿½Xï¿½eï¿½[ï¿½^ï¿½Xï¿½ÏXï¿½Vï¿½Xï¿½eï¿½ï¿½
     // =============================================================================
     public void ModifyAttack(int amount)
     {
@@ -217,7 +221,7 @@ public class Character : MonoBehaviour
     }
 
     // =============================================================================
-    // ƒ}ƒiƒVƒXƒeƒ€
+    // ï¿½}ï¿½iï¿½Vï¿½Xï¿½eï¿½ï¿½
     // =============================================================================
     public bool ConsumeMana(int amount)
     {
@@ -256,14 +260,14 @@ public class Character : MonoBehaviour
     }
 
     // =============================================================================
-    // €–Sˆ—
+    // ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½
     // =============================================================================
     void Die()
     {
         characterAnimator?.PlayAnimation(GameConstants.ANIM_DEATH);
         characterAudio?.PlaySFX("Death");
 
-        // ‘Sƒoƒt‚ğíœ
+        // ï¿½Sï¿½oï¿½tï¿½ï¿½ï¿½íœ
         buffManager?.ClearAllBuffs();
 
         OnDeath?.Invoke();
@@ -285,14 +289,14 @@ public class Character : MonoBehaviour
     }
 
     // =============================================================================
-    // ƒGƒtƒFƒNƒg•\¦
+    // ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½\ï¿½ï¿½
     // =============================================================================
     void ShowDamageEffect(int damage, DamageType damageType)
     {
         Vector3 position = transform.position + Vector3.up * 2f;
         GameEvents.OnDamageTextShow?.Invoke(position, damage, damageType);
 
-        // ƒ_ƒ[ƒWƒGƒtƒFƒNƒg
+        // ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½Gï¿½tï¿½Fï¿½Nï¿½g
         string effectName = GetDamageEffectName(damageType);
         GameEvents.OnEffectPlay?.Invoke(effectName, position);
     }
@@ -328,7 +332,7 @@ public class Character : MonoBehaviour
     }
 
     // =============================================================================
-    // ƒfƒoƒbƒO—pƒƒ\ƒbƒh
+    // ï¿½fï¿½oï¿½bï¿½Oï¿½pï¿½ï¿½ï¿½\ï¿½bï¿½h
     // =============================================================================
     [ContextMenu("Debug - Take 10 Damage")]
     public void DebugTakeDamage()

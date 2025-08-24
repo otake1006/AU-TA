@@ -41,6 +41,8 @@ public class RoundManager : MonoBehaviour
         // カードリセット
         battleManager.cardManager.ResetForNewRound();
 
+        // todo レリックの効果を適応
+
         // ターン開始
         //battleManager.turnManager.StartPlayerTurn();
         battleManager.turnManager.StartTurn();

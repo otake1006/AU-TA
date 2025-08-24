@@ -4,48 +4,55 @@ using UnityEngine;
 
 public static class GameEvents
 {
-    // ƒoƒgƒ‹ƒCƒxƒ“ƒg
+    // ï¿½oï¿½gï¿½ï¿½ï¿½Cï¿½xï¿½ï¿½ï¿½g
     public static Action<RoundResult, int> OnRoundEnd;
     public static Action<Character> OnMatchEnd;
     public static Action<int, int> OnScoreChanged; // playerWins, enemyWins
     public static Action<int> OnTurnChanged;
     public static Action<BattleState> OnBattleStateChanged;
 
-    // ƒLƒƒƒ‰ƒNƒ^[ƒCƒxƒ“ƒg
+    // ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½Cï¿½xï¿½ï¿½ï¿½g
     public static Action<Character> OnCharacterDeath;
     public static Action<Character, int, DamageType> OnCharacterDamaged;
     public static Action<Character, int> OnCharacterHealed;
     public static Action<Character, int> OnManaChanged;
     public static Action<Character, int> OnShieldChanged;
 
-    // “¯Œ‚”jƒCƒxƒ“ƒg
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jï¿½Cï¿½xï¿½ï¿½ï¿½g
     public static Action<Character, Character> OnSimultaneousDefeat;
 
-    // ƒJ[ƒhƒCƒxƒ“ƒg
+    // ï¿½Jï¿½[ï¿½hï¿½Cï¿½xï¿½ï¿½ï¿½g
     public static Action<ConditionalSkillCard, Character, Character> OnCardUsed;
     public static Action<Character, ConditionalSkillCard> OnCardDrawn;
     public static Action<Character> OnHandUpdated;
+    public static Action<RelicCard, Character> OnCardConsumed;
 
-    // ƒoƒtƒCƒxƒ“ƒg
+    // ï¿½oï¿½tï¿½Cï¿½xï¿½ï¿½ï¿½g
     public static Action<Character, TurnBasedBuffEffect> OnBuffApplied;
     public static Action<Character, TurnBasedBuffEffect> OnBuffRemoved;
     public static Action<Character> OnBuffListChanged;
 
-    // UIƒCƒxƒ“ƒg
+    // UIï¿½Cï¿½xï¿½ï¿½ï¿½g
     public static Action OnUIUpdate;
     public static Action<string> OnNotificationShow;
 
-    // ƒfƒoƒbƒOƒCƒxƒ“ƒg
+    // ï¿½fï¿½oï¿½bï¿½Oï¿½Cï¿½xï¿½ï¿½ï¿½g
     public static Action<string> OnDebugMessage;
     public static Action<string, LogLevel> OnLogMessage;
 
-    // ƒI[ƒfƒBƒIƒCƒxƒ“ƒg
+    // ï¿½Iï¿½[ï¿½fï¿½Bï¿½Iï¿½Cï¿½xï¿½ï¿½ï¿½g
     public static Action<string> OnSFXPlay;
     public static Action<string> OnBGMPlay;
     public static Action<string, Vector3> OnVoicePlay;
 
-    // ƒGƒtƒFƒNƒgƒCƒxƒ“ƒg
+    // ãƒ¬ãƒªãƒƒã‚¯ã‚¤ãƒ™ãƒ³ãƒˆ
+    public static Action<Character, RelicEffect> OnRelicAcquired;
+    public static Action<Character, RelicEffect> OnRelicLost;
+    public static Action<int> OnRoundStart; // ãƒ©ã‚¦ãƒ³ãƒ‰ç•ªå·
+
+    // ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½Cï¿½xï¿½ï¿½ï¿½g
     public static Action<string, Vector3> OnEffectPlay;
     public static Action<Vector3, int, DamageType> OnDamageTextShow;
     public static Action<Vector3, int> OnHealTextShow;
+    public static Action<Character, int> OnHealEffect;
 }

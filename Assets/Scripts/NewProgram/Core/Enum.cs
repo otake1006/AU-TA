@@ -1,107 +1,108 @@
-// ƒoƒgƒ‹ó‘Ô
+// ï¿½oï¿½gï¿½ï¿½ï¿½ï¿½ï¿½
 public enum BattleState
 {
-    Initializing,      // ‰Šú‰»’†
-    PlayerTurn,        // ƒvƒŒƒCƒ„[ƒ^[ƒ“
-    EnemyTurn,         // “Gƒ^[ƒ“
-    SkillExecution,    // ƒXƒLƒ‹Às’†
-    BuffProcessing,    // ƒoƒtˆ—’†
-    RoundEnd,          // ƒ‰ƒEƒ“ƒhI—¹
-    GameOver           // ƒQ[ƒ€I—¹
+    Initializing,      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    PlayerTurn,        // ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½^ï¿½[ï¿½ï¿½
+    EnemyTurn,         // ï¿½Gï¿½^ï¿½[ï¿½ï¿½
+    SkillExecution,    // ï¿½Xï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
+    BuffProcessing,    // ï¿½oï¿½tï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    RoundEnd,          // ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½hï¿½Iï¿½ï¿½
+    GameOver           // ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½ï¿½
 }
 
-// ƒ‰ƒEƒ“ƒhŒ‹‰Ê
+// ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ï¿½
 public enum RoundResult
 {
-    PlayerWin,         // ƒvƒŒƒCƒ„[Ÿ—˜
-    EnemyWin,          // “GŸ—˜
-    Draw,              // ˆø‚«•ª‚¯
-    Timeout            // ŠÔØ‚ê
+    PlayerWin,         // ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½
+    EnemyWin,          // ï¿½Gï¿½ï¿½ï¿½ï¿½
+    Draw,              // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    Timeout            // ï¿½ï¿½ï¿½ÔØ‚ï¿½
 }
 
-// “¯Œ‚”jƒ‹[ƒ‹
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½ï¿½
 public enum SimultaneousDefeatRule
 {
-    Draw,              // ˆø‚«•ª‚¯iƒ‰ƒEƒ“ƒh‚â‚è’¼‚µj
-    PlayerWins,        // ƒvƒŒƒCƒ„[Ÿ—˜
-    EnemyWins,         // “GŸ—˜
-    HigherHPWins,      // c‚èHPŠ„‡‚ª‚‚¢•û‚ªŸ—˜
-    FirstToActWins     // æ‚És“®‚µ‚½•û‚ªŸ—˜
+    Draw,              // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½hï¿½ï¿½è’¼ï¿½ï¿½ï¿½j
+    PlayerWins,        // ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½
+    EnemyWins,         // ï¿½Gï¿½ï¿½ï¿½ï¿½
+    HigherHPWins,      // ï¿½cï¿½ï¿½HPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    FirstToActWins     // ï¿½ï¿½Ésï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 }
 
-// ƒXƒLƒ‹Œø‰Êƒ^ƒCƒv
+// ï¿½Xï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Êƒ^ï¿½Cï¿½v
 public enum SkillEffectType
 {
-    Damage,            // ƒ_ƒ[ƒW
-    Heal,              // ‰ñ•œ
-    ApplyBuff,         // ƒoƒt•t—^
-    RemoveBuff,        // ƒoƒt‰ğœ
-    Shield,            // ƒV[ƒ‹ƒh
-    Stun,              // ƒXƒ^ƒ“
-    Teleport,          // ƒeƒŒƒ|[ƒg
-    DrawCard,          // ƒJ[ƒhƒhƒ[
-    DiscardCard,       // ƒJ[ƒh”jŠü
-    ManaRestore,       // ƒ}ƒi‰ñ•œ
-    ManaReduce         // ƒ}ƒiŒ¸­
+    Damage,            // ï¿½_ï¿½ï¿½ï¿½[ï¿½W
+    Heal,              // ï¿½ï¿½
+    ApplyBuff,         // ï¿½oï¿½tï¿½tï¿½^
+    RemoveBuff,        // ï¿½oï¿½tï¿½ï¿½ï¿½ï¿½
+    Shield,            // ï¿½Vï¿½[ï¿½ï¿½ï¿½h
+    Stun,              // ï¿½Xï¿½^ï¿½ï¿½
+    Teleport,          // ï¿½eï¿½ï¿½ï¿½|ï¿½[ï¿½g
+    DrawCard,          // ï¿½Jï¿½[ï¿½hï¿½hï¿½ï¿½ï¿½[
+    DiscardCard,       // ï¿½Jï¿½[ï¿½hï¿½jï¿½ï¿½
+    ManaRestore,       // ï¿½}ï¿½iï¿½ï¿½
+    ManaReduce         // ï¿½}ï¿½iï¿½ï¿½ï¿½ï¿½
 }
 
-// ƒ^[ƒQƒbƒgƒ^ƒCƒv
+// ï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½^ï¿½Cï¿½v
 public enum TargetType
 {
-    Self,              // ©•ª
-    Enemy,             // “G
-    AllEnemies,        // ‘S‚Ä‚Ì“G
-    AllAllies,         // ‘S‚Ä‚Ì–¡•û
-    All,               // ‘S‚Ä
-    Random             // ƒ‰ƒ“ƒ_ƒ€
+    Self,              // ï¿½ï¿½ï¿½ï¿½
+    Enemy,             // ï¿½G
+    AllEnemies,        // ï¿½Sï¿½Ä‚Ì“G
+    AllAllies,         // ï¿½Sï¿½Ä‚Ì–ï¿½ï¿½ï¿½
+    All,               // ï¿½Sï¿½ï¿½
+    Random             // ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½
 }
 
-// ƒoƒtƒ^ƒCƒv
+// ï¿½oï¿½tï¿½^ï¿½Cï¿½v
 public enum BuffType
 {
-    Buff,              // —L—˜‚ÈŒø‰Ê
-    Debuff,            // •s—˜‚ÈŒø‰Ê
-    Neutral            // ’†—§‚ÈŒø‰Ê
+    Buff,              // ï¿½Lï¿½ï¿½ï¿½ÈŒï¿½ï¿½ï¿½
+    Debuff,            // ï¿½sï¿½ï¿½ï¿½ÈŒï¿½ï¿½ï¿½
+    Neutral,           // ï¿½ï¿½ï¿½ï¿½ï¿½ÈŒï¿½ï¿½ï¿½
+    Relic              // ãƒ¬ãƒªãƒƒã‚¯åŠ¹æœ
 }
 
-// ƒoƒt”­“®ƒ^ƒCƒ~ƒ“ƒO
+// ï¿½oï¿½tï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½Cï¿½~ï¿½ï¿½ï¿½O
 public enum BuffTriggerTiming
 {
-    TurnStart,         // ƒ^[ƒ“ŠJn
-    TurnEnd,           // ƒ^[ƒ“I—¹
-    OnDamage,          // ƒ_ƒ[ƒW‚ğó‚¯‚½
-    OnAttack,          // UŒ‚
-    OnHeal,            // ‰ñ•œ
-    OnCardUse,         // ƒJ[ƒhg—p
-    OnBuffApply,       // ƒoƒt•t—^
-    OnBuffRemove       // ƒoƒt‰ğœ
+    TurnStart,         // ï¿½^ï¿½[ï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½
+    TurnEnd,           // ï¿½^ï¿½[ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½
+    OnDamage,          // ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½ï¿½ó‚¯‚ï¿½ï¿½ï¿½
+    OnAttack,          // ï¿½Uï¿½ï¿½ï¿½ï¿½
+    OnHeal,            // ï¿½ñ•œï¿½
+    OnCardUse,         // ï¿½Jï¿½[ï¿½hï¿½gï¿½pï¿½ï¿½
+    OnBuffApply,       // ï¿½oï¿½tï¿½tï¿½^ï¿½ï¿½
+    OnBuffRemove       // ï¿½oï¿½tï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 }
 
-// ğŒƒ^ƒCƒv
+// ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½Cï¿½v
 public enum ConditionType
 {
-    Health,            // HP’l
-    HealthPercentage,  // HPŠ„‡(%)
-    Mana,              // ƒ}ƒi’l
-    ManaPercentage,    // ƒ}ƒiŠ„‡(%)
-    Attack,            // UŒ‚—Í
-    Defense,           // –hŒä—Í
-    Shield,            // ƒV[ƒ‹ƒh’l
-    BuffCount,         // ƒoƒt”
-    DebuffCount,       // ƒfƒoƒt”
-    TotalBuffCount,    // ‘Só‘ÔˆÙí”
-    HandSize,          // èD–‡”
-    TurnNumber         // ƒ^[ƒ“”
+    Health,            // HPï¿½l
+    HealthPercentage,  // HPï¿½ï¿½ï¿½ï¿½(%)
+    Mana,              // ï¿½}ï¿½iï¿½l
+    ManaPercentage,    // ï¿½}ï¿½iï¿½ï¿½ï¿½ï¿½(%)
+    Attack,            // ï¿½Uï¿½ï¿½ï¿½ï¿½
+    Defense,           // ï¿½hï¿½ï¿½ï¿½
+    Shield,            // ï¿½Vï¿½[ï¿½ï¿½ï¿½hï¿½l
+    BuffCount,         // ï¿½oï¿½tï¿½ï¿½
+    DebuffCount,       // ï¿½fï¿½oï¿½tï¿½ï¿½
+    TotalBuffCount,    // ï¿½Sï¿½ï¿½ÔˆÙí”
+    HandSize,          // ï¿½ï¿½Dï¿½ï¿½ï¿½ï¿½
+    TurnNumber         // ï¿½^ï¿½[ï¿½ï¿½ï¿½ï¿½
 }
 
-// ğŒƒ^[ƒQƒbƒg
+// ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½[ï¿½Qï¿½bï¿½g
 public enum ConditionTarget
 {
-    Self,              // ©•ª
-    Enemy              // ‘Šè
+    Self,              // ï¿½ï¿½ï¿½ï¿½
+    Enemy              // ï¿½ï¿½ï¿½ï¿½
 }
 
-// ”äŠr‰‰Zq
+// ï¿½ï¿½rï¿½ï¿½ï¿½Zï¿½q
 public enum ComparisonOperator
 {
     GreaterThan,       // >
@@ -112,42 +113,50 @@ public enum ComparisonOperator
     NotEqual           // !=
 }
 
-// ƒ_ƒ[ƒWƒ^ƒCƒv
+// ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½^ï¿½Cï¿½v
 public enum DamageType
 {
-    Normal,            // ’Êí
-    Critical,          // ƒNƒŠƒeƒBƒJƒ‹
-    Shield,            // ƒV[ƒ‹ƒh
-    Poison,            // “Å
-    Burn,              // ‰Î
-    Magic,             // –‚–@
-    True               // ^ƒ_ƒ[ƒWi–hŒä–³‹j
+    Normal,            // ï¿½Êï¿½
+    Critical,          // ï¿½Nï¿½ï¿½ï¿½eï¿½Bï¿½Jï¿½ï¿½
+    Shield,            // ï¿½Vï¿½[ï¿½ï¿½ï¿½h
+    Poison,            // ï¿½ï¿½
+    Burn,              // ï¿½Îï¿½
+    Magic,             // ï¿½ï¿½ï¿½@
+    True               // ï¿½^ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½iï¿½hï¿½ä–³ï¿½ï¿½ï¿½j
 }
 
-// ƒƒOƒŒƒxƒ‹
+// ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½xï¿½ï¿½
 public enum LogLevel
 {
-    Info,              // î•ñ
-    Warning,           // Œx
-    Error,             // ƒGƒ‰[
-    Debug              // ƒfƒoƒbƒO
+    Info,              // ï¿½ï¿½ï¿½
+    Warning,           // ï¿½xï¿½ï¿½
+    Error,             // ï¿½Gï¿½ï¿½ï¿½[
+    Debug              // ï¿½fï¿½oï¿½bï¿½O
 }
 
-// AI“ïˆÕ“x
+// AIï¿½ï¿½Õ“x
 public enum AIDifficulty
 {
-    Easy,              // ŠÈ’P
-    Normal,            // •’Ê
-    Hard,              // “ï‚µ‚¢
-    Expert             // ƒGƒLƒXƒp[ƒg
+    Easy,              // ï¿½È’P
+    Normal,            // ï¿½ï¿½ï¿½ï¿½
+    Hard,              // ï¿½ï‚µï¿½ï¿½
+    Expert             // ï¿½Gï¿½Lï¿½Xï¿½pï¿½[ï¿½g
 }
 
-// ƒJ[ƒhƒŒƒAƒŠƒeƒB
+// ï¿½Jï¿½[ï¿½hï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½eï¿½B
 public enum CardRarity
 {
-    Common,            // ƒRƒ‚ƒ“
-    Uncommon,          // ƒAƒ“ƒRƒ‚ƒ“
-    Rare,              // ƒŒƒA
-    Epic,              // ƒGƒsƒbƒN
-    Legendary          // ƒŒƒWƒFƒ“ƒ_ƒŠ[
+    Common,            // ï¿½Rï¿½ï¿½ï¿½ï¿½
+    Uncommon,          // ï¿½Aï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ï¿½
+    Rare,              // ï¿½ï¿½ï¿½A
+    Epic,              // ï¿½Gï¿½sï¿½bï¿½N
+    Legendary          // ï¿½ï¿½ï¿½Wï¿½Fï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½[
+}
+
+// ã‚«ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒ—
+public enum CardType
+{
+    SkillCard,         // ã‚¹ã‚­ãƒ«ã‚«ãƒ¼ãƒ‰
+    ConditionalCard,   // æ¡ä»¶ä»˜ãã‚«ãƒ¼ãƒ‰
+    RelicCard          // ãƒ¬ãƒªãƒƒã‚¯ã‚«ãƒ¼ãƒ‰
 }

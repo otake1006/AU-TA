@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd67a1a34da3cfb41b04bbb80ca80f82, type: 3}
+  m_Name: MysticShieldRelic
+  m_EditorClassIdentifier: 
+  buffID: 1002
+  buffName: "\u795E\u79D8\u306E\u76FE"
+  buffType: 0
+  duration: 0
+  stackCount: 1
+  maxStacks: 1
+  isPermanent: 0
+  buffIcon: {fileID: 0}
+  triggerTiming: 0
+  description: "\u30E9\u30A6\u30F3\u30C9\u958B\u59CB\u6642\u306B3\u306E\u30B7\u30FC\u30EB\u30C9\u3092\u7372\u5F97\u3059\u308B\uFF08\u6700\u59275\uFF09"
+  remainingTurns: 0
+  rarity: 1
+  category: 1
+  isStackable: 0
+  acquisitionCost: 0
+  flavorText: "\u9B54\u6CD5\u306E\u529B\u3067\u8EAB\u3092\u5B88\u308B\u53E4\u4EE3\u306E\u76FE"
+  shieldAmount: 3
+  maxShieldStacks: 5

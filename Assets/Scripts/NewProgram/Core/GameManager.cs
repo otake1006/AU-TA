@@ -14,21 +14,23 @@ public class GameManager : MonoBehaviour
     public UIManager uiManager;
     public AudioManager audioManager;
     public EffectManager effectManager;
+    public RelicManager relicManager;
+    public DefeatRescueSystem rescueSystem;
 
     [Header("Scene References")]
     public Character player;
     public Character enemy;
 
-    // ƒQ[ƒ€ó‘Ô
+    // ï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½
     public GameState CurrentGameState { get; private set; }
     public bool IsPaused { get; private set; }
 
-    // ƒCƒxƒ“ƒg
+    // ï¿½Cï¿½xï¿½ï¿½ï¿½g
     public System.Action<GameState> OnGameStateChanged;
 
     void Awake()
     {
-        // ƒVƒ“ƒOƒ‹ƒgƒ“İ’è
+        // ï¿½Vï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½gï¿½ï¿½ï¿½İ’ï¿½
         if (Instance == null)
         {
             Instance = this;
@@ -65,7 +67,7 @@ public class GameManager : MonoBehaviour
 
     void SetupManagers()
     {
-        // ƒ}ƒl[ƒWƒƒ[‚Ì‰Šú‰»‡˜‚ªd—v
+        // ï¿½}ï¿½lï¿½[ï¿½Wï¿½ï¿½ï¿½[ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½dï¿½v
         if (audioManager != null)
             audioManager.Initialize(gameConfig);
 
@@ -77,6 +79,16 @@ public class GameManager : MonoBehaviour
 
         if (battleManager != null)
             battleManager.Initialize(gameConfig, player, enemy);
+
+        // ãƒ¬ãƒªãƒƒã‚¯ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®åˆæœŸåŒ–
+        if (relicManager != null && gameConfig.enableRelicSystem)
+            relicManager.gameConfig = gameConfig;
+
+        // æ•‘æ¸ˆã‚·ã‚¹ãƒ†ãƒ ã®åˆæœŸåŒ–
+        if (rescueSystem != null && gameConfig.enableRelicSystem && gameConfig.enableDefeatRescue)
+        {
+            rescueSystem.gameConfig = gameConfig;
+        }
     }
 
     void SetupEventListeners()
@@ -84,7 +96,14 @@ public class GameManager : MonoBehaviour
         GameEvents.OnMatchEnd += OnMatchEnd;
         GameEvents.OnLogMessage += OnLogMessage;
 
-        // ƒfƒoƒbƒOƒ‚[ƒh‚Ìİ’è
+        // æ•‘æ¸ˆã‚·ã‚¹ãƒ†ãƒ ã®ã‚¤ãƒ™ãƒ³ãƒˆ
+        if (rescueSystem != null)
+        {
+            rescueSystem.OnRescueCompleted += OnPlayerRescued;
+            rescueSystem.OnRescueSkipped += OnRescueSkipped;
+        }
+
+        // ï¿½fï¿½oï¿½bï¿½Oï¿½ï¿½ï¿½[ï¿½hï¿½Ìİ’ï¿½
         if (gameConfig.enableDebugMode)
         {
             var debugManager = FindObjectOfType<InputSystemDebugManager>();
@@ -103,7 +122,7 @@ public class GameManager : MonoBehaviour
         CurrentGameState = newState;
         OnGameStateChanged?.Invoke(newState);
 
-        // ó‘Ô‚É‰‚¶‚½ˆ—
+        // ï¿½ï¿½Ô‚É‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         switch (newState)
         {
             case GameState.MainMenu:
@@ -236,16 +255,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void OnPlayerRescued(Character rescuedPlayer)
+    {
+        GameEvents.OnDebugMessage?.Invoke($"{rescuedPlayer.characterName} has been rescued!");
+        
+        // æˆ¦é—˜ã‚’å†é–‹
+        if (battleManager != null)
+        {
+            battleManager.RestartBattle();
+        }
+        
+        // UIã‚’æ›´æ–°
+        if (uiManager != null)
+        {
+            uiManager.ShowNotification("ç¥ã®æµã¿ã«ã‚ˆã‚Šå¾©æ´»ã—ã¾ã—ãŸï¼");
+        }
+    }
+
+    void OnRescueSkipped(Character player)
+    {
+        GameEvents.OnDebugMessage?.Invoke($"{player.characterName} skipped rescue opportunity");
+        
+        // é€šå¸¸ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼å‡¦ç†ã‚’ç¶šè¡Œ
+        ChangeGameState(GameState.GameOver);
+    }
+
     void OnDestroy()
     {
-        // ƒCƒxƒ“ƒgƒŠƒXƒi[‰ğœ
+        // ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Xï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½
         GameEvents.OnMatchEnd -= OnMatchEnd;
         GameEvents.OnLogMessage -= OnLogMessage;
+
+        // æ•‘æ¸ˆã‚·ã‚¹ãƒ†ãƒ ã®ã‚¤ãƒ™ãƒ³ãƒˆå‰Šé™¤
+        if (rescueSystem != null)
+        {
+            rescueSystem.OnRescueCompleted -= OnPlayerRescued;
+            rescueSystem.OnRescueSkipped -= OnRescueSkipped;
+        }
     }
 
     //void Update()
     //{
-    //    // ESCƒL[‚Åƒ|[ƒY
+    //    // ESCï¿½Lï¿½[ï¿½Åƒ|ï¿½[ï¿½Y
     //    if (Input.GetKeyDown(KeyCode.Escape))
     //    {
     //        if (CurrentGameState == GameState.Battle)
@@ -256,13 +307,13 @@ public class GameManager : MonoBehaviour
     //}
 }
 
-// ƒQ[ƒ€ó‘Ô
+// ï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½
 public enum GameState
 {
-    MainMenu,          // ƒƒCƒ“ƒƒjƒ…[
-    Battle,            // ƒoƒgƒ‹’†
-    Paused,            // ƒ|[ƒY’†
-    GameOver,          // ƒQ[ƒ€I—¹
-    Settings,          // İ’è‰æ–Ê
-    Loading            // ƒ[ƒh’†
+    MainMenu,          // ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[
+    Battle,            // ï¿½oï¿½gï¿½ï¿½ï¿½ï¿½
+    Paused,            // ï¿½|ï¿½[ï¿½Yï¿½ï¿½
+    GameOver,          // ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½ï¿½
+    Settings,          // ï¿½İ’ï¿½ï¿½ï¿½
+    Loading            // ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½
 }

@@ -4,78 +4,135 @@ using UnityEngine;
 public class GameConfig : ScriptableObject
 {
     [Header("Match Settings")]
-    [Tooltip("Ÿ—˜‚É•K—v‚Èƒ‰ƒEƒ“ƒh”")]
+    [Tooltip("å‹åˆ©ã«å¿…è¦ãªãƒ©ã‚¦ãƒ³ãƒ‰æ•°")]
     public int winsNeeded = 2;
 
-    [Tooltip("1ƒ‰ƒEƒ“ƒh‚ÌÅ‘åƒ^[ƒ“”")]
+    [Tooltip("1ãƒ©ã‚¦ãƒ³ãƒ‰ã®æœ€å¤§ã‚¿ãƒ¼ãƒ³æ•°")]
     public int maxTurnsPerRound = 10;
 
-    [Tooltip("“¯Œ‚”j‚ğ—LŒø‚É‚·‚é‚©")]
+    [Tooltip("åŒæ™‚æ’ƒç ´ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹")]
     public bool enableSimultaneousDefeat = true;
 
-    [Tooltip("“¯Œ‚”j‚Ì”»’è•û–@")]
+    [Tooltip("åŒæ™‚æ’ƒç ´æ™‚ã®åˆ¤å®šæ–¹æ³•")]
     public SimultaneousDefeatRule simultaneousDefeatRule = SimultaneousDefeatRule.Draw;
 
     [Header("Card Settings")]
-    [Tooltip("‰ŠúèD–‡”")]
+    [Tooltip("åˆæœŸæ‰‹æœ­æšæ•°")]
     public int initialHandSize = 4;
 
-    [Tooltip("Å‘åèD–‡”")]
+    [Tooltip("æœ€å¤§æ‰‹æœ­æšæ•°")]
     public int maxHandSize = 7;
 
-    [Tooltip("ƒ^[ƒ“ŠJn‚Ìƒhƒ[–‡”")]
+    [Tooltip("ã‚¿ãƒ¼ãƒ³é–‹å§‹æ™‚ã®ãƒ‰ãƒ­ãƒ¼æšæ•°")]
     public int drawPerTurn = 1;
 
     [Header("Character Settings")]
-    [Tooltip("ƒ^[ƒ“ŠJn‚Ìƒ}ƒi‰ñ•œ—Ê")]
+    [Tooltip("ã‚¿ãƒ¼ãƒ³é–‹å§‹æ™‚ã®ãƒãƒŠå›å¾©é‡")]
     public int manaRegenPerTurn = 3;
 
-    [Tooltip("ƒ‰ƒEƒ“ƒhŠÔ‚Å‚ÌƒoƒtŒp‘±")]
+    [Tooltip("ãƒ©ã‚¦ãƒ³ãƒ‰é–“ã§ã®ãƒãƒ•ç¶™ç¶š")]
     public bool persistBuffsBetweenRounds = false;
 
     [Header("Debug Settings")]
-    [Tooltip("ƒfƒoƒbƒOƒ‚[ƒh‚ğ—LŒø‚É‚·‚é")]
+    [Tooltip("ãƒ‡ãƒãƒƒã‚°ãƒ¢ãƒ¼ãƒ‰ã‚’æœ‰åŠ¹ã«ã™ã‚‹")]
     public bool enableDebugMode = true;
 
-    [Tooltip("Ú×ƒƒO‚ğo—Í‚·‚é")]
+    [Tooltip("è©³ç´°ãƒ­ã‚°ã‚’å‡ºåŠ›ã™ã‚‹")]
     public bool enableVerboseLogging = false;
 
-    [Tooltip("AI‚ÌvlŠÔi•bj")]
+    [Tooltip("AIã®æ€è€ƒæ™‚é–“ï¼ˆç§’ï¼‰")]
     public float aiThinkingTime = 1f;
 
-    [Tooltip("ƒAƒjƒ[ƒVƒ‡ƒ“‘¬“x”{—¦")]
+    [Tooltip("ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é€Ÿåº¦å€ç‡")]
     public float animationSpeedMultiplier = 1f;
 
     [Header("UI Settings")]
-    [Tooltip("ƒ_ƒ[ƒWƒeƒLƒXƒg‚Ì•\¦ŠÔ")]
+    [Tooltip("ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒ†ã‚­ã‚¹ãƒˆã®è¡¨ç¤ºæ™‚é–“")]
     public float damageTextDuration = 2f;
 
-    [Tooltip("ƒJ[ƒhƒzƒo[‚ÌŠg‘å—¦")]
+    [Tooltip("ã‚«ãƒ¼ãƒ‰ãƒ›ãƒãƒ¼æ™‚ã®æ‹¡å¤§ç‡")]
     public float cardHoverScale = 1.1f;
 
-    [Tooltip("ƒoƒtƒAƒCƒRƒ“‚ÌÅ‘å•\¦”")]
+    [Tooltip("ãƒãƒ•ã‚¢ã‚¤ã‚³ãƒ³ã®æœ€å¤§è¡¨ç¤ºæ•°")]
     public int maxBuffIconsDisplay = 8;
 
     [Header("Audio Settings")]
-    [Tooltip("BGM‰¹—Ê")]
+    [Tooltip("BGMéŸ³é‡")]
     [Range(0f, 1f)]
     public float bgmVolume = 0.7f;
 
-    [Tooltip("SE‰¹—Ê")]
+    [Tooltip("SEéŸ³é‡")]
     [Range(0f, 1f)]
     public float sfxVolume = 0.8f;
 
-    [Tooltip("ƒ{ƒCƒX‰¹—Ê")]
+    [Tooltip("ãƒœã‚¤ã‚¹éŸ³é‡")]
     [Range(0f, 1f)]
     public float voiceVolume = 0.9f;
 
+    [Header("Relic Settings")]
+    [Tooltip("ãƒ¬ãƒªãƒƒã‚¯æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹")]
+    public bool enableRelicSystem = true;
+    
+    [Tooltip("1ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒæŒã¦ã‚‹æœ€å¤§ãƒ¬ãƒªãƒƒã‚¯æ•°")]
+    public int maxRelicsPerCharacter = 6;
+    
+    [Tooltip("ãƒ¬ãƒªãƒƒã‚¯ãŒãƒ©ã‚¦ãƒ³ãƒ‰é–“ã§æŒç¶šã™ã‚‹ã‹")]
+    public bool persistRelicsBetweenRounds = true;
+    
+    [Tooltip("ãƒ¬ãƒªãƒƒã‚¯ãŒãƒãƒƒãƒé–“ã§æŒç¶šã™ã‚‹ã‹")]
+    public bool persistRelicsBetweenMatches = false;
+    
+    [Tooltip("ãƒ¬ãƒªãƒƒã‚¯ã‚«ãƒ¼ãƒ‰ã®å‡ºç¾ç‡")]
+    [Range(0f, 1f)]
+    public float relicCardSpawnRate = 0.15f;
+    
+    [Tooltip("ãƒ¬ã‚¢ãƒªãƒ†ã‚£åˆ¥å‡ºç¾ç‡ - Common")]
+    [Range(0f, 1f)]
+    public float commonRelicRate = 0.50f;
+    
+    [Tooltip("ãƒ¬ã‚¢ãƒªãƒ†ã‚£åˆ¥å‡ºç¾ç‡ - Uncommon")]
+    [Range(0f, 1f)]
+    public float uncommonRelicRate = 0.30f;
+    
+    [Tooltip("ãƒ¬ã‚¢ãƒªãƒ†ã‚£åˆ¥å‡ºç¾ç‡ - Rare")]
+    [Range(0f, 1f)]
+    public float rareRelicRate = 0.15f;
+    
+    [Tooltip("ãƒ¬ã‚¢ãƒªãƒ†ã‚£åˆ¥å‡ºç¾ç‡ - Epic")]
+    [Range(0f, 1f)]
+    public float epicRelicRate = 0.04f;
+    
+    [Tooltip("ãƒ¬ã‚¢ãƒªãƒ†ã‚£åˆ¥å‡ºç¾ç‡ - Legendary")]
+    [Range(0f, 1f)]
+    public float legendaryRelicRate = 0.01f;
+
+    [Header("Defeat Rescue Settings")]
+    [Tooltip("æ•—åŒ—æ•‘æ¸ˆã‚·ã‚¹ãƒ†ãƒ ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹")]
+    public bool enableDefeatRescue = true;
+    
+    [Tooltip("æ•‘æ¸ˆã§æç¤ºã•ã‚Œã‚‹ãƒ¬ãƒªãƒƒã‚¯æ•°")]
+    public int rescueRelicCount = 3;
+    
+    [Tooltip("1ãƒãƒƒãƒã§ã®æœ€å¤§æ•‘æ¸ˆå›æ•°")]
+    public int maxRescueCount = 1;
+    
+    [Tooltip("æ•‘æ¸ˆæ™‚ã®HPå›å¾©ç‡")]
+    [Range(0f, 1f)]
+    public float rescueHealPercentage = 0.5f;
+    
+    [Tooltip("æ•‘æ¸ˆæ™‚ã®ãƒãƒŠå›å¾©é‡")]
+    public int rescueManaRestore = 5;
+    
+    [Tooltip("æ•‘æ¸ˆæ™‚ã«é‡è¤‡ãƒ¬ãƒªãƒƒã‚¯ã‚’è¨±å¯ã™ã‚‹ã‹")]
+    public bool allowDuplicateRescueRelics = false;
+
     [Header("Balance Settings")]
-    [Tooltip("Šî–{ƒ_ƒ[ƒW”{—¦")]
+    [Tooltip("åŸºæœ¬ãƒ€ãƒ¡ãƒ¼ã‚¸å€ç‡")]
     public float baseDamageMultiplier = 1.0f;
 
-    [Tooltip("ƒNƒŠƒeƒBƒJƒ‹”{—¦")]
+    [Tooltip("ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«å€ç‡")]
     public float criticalMultiplier = 1.5f;
 
-    [Tooltip("ƒV[ƒ‹ƒhŒø—¦")]
+    [Tooltip("ã‚·ãƒ¼ãƒ«ãƒ‰åŠ¹ç‡")]
     public float shieldEfficiency = 1.0f;
 }
