@@ -48,4 +48,10 @@ public static class GameEvents
     public static Action<string, Vector3> OnEffectPlay;
     public static Action<Vector3, int, DamageType> OnDamageTextShow;
     public static Action<Vector3, int> OnHealTextShow;
+
+    // レリック関連イベント
+    public static Action<Character, RelicEffect> OnRelicAcquired;
+    public static Action<Character, RelicEffect> OnRelicRemoved;
+    public static Action<Character, RelicEffect> OnRelicStacked;
+    public static Action<Character> OnRelicListChanged;
 }
