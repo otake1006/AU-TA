@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: New Damage Boost Relic
   m_EditorClassIdentifier: 
   relicID: 0
-  relicName: 
+  relicName: test
   rarity: 0
   relicIcon: {fileID: 0}
-  description: 
+  description: asdfsfasd
   triggerType: 0
   canStack: 0
   maxStacks: 1
