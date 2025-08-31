@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7fe66295bbe4bc4d9478fba8b4c1871, type: 3}
+  m_Name: Enemy
+  m_EditorClassIdentifier: 
+  characterName: Enemy
+  description: test
+  characterPortrait: {fileID: 0}
+  characterSprite: {fileID: 0}
+  maxHealth: 100
+  maxMana: 50
+  baseAttack: 10
+  baseDefense: 0
+  healthGrowth: 1.1
+  manaGrowth: 1.05
+  attackGrowth: 1.08
+  defenseGrowth: 1.06
+  traits: []
+  attackSounds: []
+  damagedSounds: []
+  deathSounds: []
+  victoryVoices: []
+  animatorController: {fileID: 0}

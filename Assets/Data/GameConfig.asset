@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f65f151a422fd14a95b7f9ff63c4909, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  winsNeeded: 3
+  maxTurnsPerRound: 10
+  enableSimultaneousDefeat: 0
+  simultaneousDefeatRule: 2
+  initialHandSize: 4
+  maxHandSize: 7
+  drawPerTurn: 1
+  manaRegenPerTurn: 3
+  persistBuffsBetweenRounds: 0
+  enableDebugMode: 1
+  enableVerboseLogging: 1
+  aiThinkingTime: 1
+  animationSpeedMultiplier: 1
+  damageTextDuration: 2
+  cardHoverScale: 1.1
+  maxBuffIconsDisplay: 8
+  bgmVolume: 0.7
+  sfxVolume: 0.8
+  voiceVolume: 0.9
+  baseDamageMultiplier: 1
+  criticalMultiplier: 1
+  shieldEfficiency: 0

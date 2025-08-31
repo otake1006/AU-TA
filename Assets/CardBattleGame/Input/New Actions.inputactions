@@ -1,0 +1,34 @@
+{
+    "name": "New Actions",
+    "maps": [
+        {
+            "name": "Debug",
+            "id": "3db11951-280c-4c48-92b6-300f0e5ac22c",
+            "actions": [
+                {
+                    "name": "ToggleDebugUI",
+                    "type": "Button",
+                    "id": "6cb5fc05-bf1a-428c-ab5f-35c5be3fb15e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7ebde423-0493-4468-b4ef-82cf56d09adc",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleDebugUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
