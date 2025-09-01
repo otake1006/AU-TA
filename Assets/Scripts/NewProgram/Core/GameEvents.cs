@@ -5,6 +5,7 @@ using UnityEngine;
 public static class GameEvents
 {
     // バトルイベント
+    public static Action OnRoundStart;
     public static Action<RoundResult, int> OnRoundEnd;
     public static Action<Character> OnMatchEnd;
     public static Action<int, int> OnScoreChanged; // playerWins, enemyWins
