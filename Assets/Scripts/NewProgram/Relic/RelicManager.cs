@@ -31,8 +31,8 @@ public class RelicManager : MonoBehaviour
         }
 
         // ゲームイベントを監視
-        //GameEvents.OnBattleStart += () => TriggerRelicEvent(RelicTriggerType.BattleStart);
-        //GameEvents.OnBattleEnd += () => TriggerRelicEvent(RelicTriggerType.BattleEnd);
+        GameEvents.OnRoundStart += () => TriggerRelicEvent(RelicTriggerType.BattleStart);
+        GameEvents.OnRoundEnd += (type, currentRound) => TriggerRelicEvent(RelicTriggerType.BattleEnd);
         //GameEvents.OnCardUsed += () => TriggerRelicEvent(RelicTriggerType.CardPlayed, card);
         GameEvents.OnBuffApplied += (target, buff) => {
             if (target == character)
