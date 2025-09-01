@@ -18,6 +18,11 @@ public class DamageBoostRelic : RelicEffect
         }
     }
 
+    public override void OnBattleStart()
+    {
+        GameEvents.OnDebugMessage?.Invoke($"レリックはつどう！！！！");
+    }
+
     public override void OnRemoved()
     {
         GameEvents.OnDebugMessage?.Invoke($"{owner.characterName} lost {relicName}!");
